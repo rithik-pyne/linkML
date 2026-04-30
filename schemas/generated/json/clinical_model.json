@@ -1,0 +1,1171 @@
+{
+    "$defs": {
+        "AJCCStageEnum": {
+            "description": "",
+            "enum": [
+                "Stage_0",
+                "IA1",
+                "IA2",
+                "IA3",
+                "IB",
+                "IIA",
+                "IIB",
+                "IIIA",
+                "IIIB",
+                "IIIC",
+                "IVA",
+                "IVB"
+            ],
+            "title": "AJCCStageEnum",
+            "type": "string"
+        },
+        "AssessmentTypeEnum": {
+            "description": "",
+            "enum": [
+                "Baseline",
+                "Follow_up",
+                "Progression"
+            ],
+            "title": "AssessmentTypeEnum",
+            "type": "string"
+        },
+        "Biopsy": {
+            "additionalProperties": false,
+            "description": "Tissue or liquid biopsy procedure - multiple rows per patient",
+            "properties": {
+                "biopsy_date": {
+                    "format": "date",
+                    "type": "string"
+                },
+                "biopsy_id": {
+                    "type": "string"
+                },
+                "biopsy_site_description": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "biopsy_site_snomed": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "biopsy_technique": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "blood_collection_volume_ml": {
+                    "minimum": 0,
+                    "type": [
+                        "number",
+                        "null"
+                    ]
+                },
+                "blood_draw_timestamp": {
+                    "format": "date-time",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "blood_tube_type": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "cfdna_concentration_ng_ul": {
+                    "minimum": 0,
+                    "type": [
+                        "number",
+                        "null"
+                    ]
+                },
+                "cfdna_total_yield_ng": {
+                    "minimum": 0,
+                    "type": [
+                        "number",
+                        "null"
+                    ]
+                },
+                "histologic_subtype": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "necrosis_percent": {
+                    "maximum": 100,
+                    "minimum": 0,
+                    "type": [
+                        "number",
+                        "null"
+                    ]
+                },
+                "pathology_report_pdf_path": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "pathology_slide_image_path": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "patient_id": {
+                    "pattern": "^NGDX-[0-9]{3}$",
+                    "type": "string"
+                },
+                "pdl1_antibody_clone": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "pdl1_tps_percent": {
+                    "maximum": 100,
+                    "minimum": 0,
+                    "type": [
+                        "integer",
+                        "null"
+                    ]
+                },
+                "plasma_volume_ml": {
+                    "minimum": 0,
+                    "type": [
+                        "number",
+                        "null"
+                    ]
+                },
+                "specimen_adequacy": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "specimen_type": {
+                    "$ref": "#/$defs/SpecimenTypeEnum"
+                },
+                "time_to_fractionation_hours": {
+                    "minimum": 0,
+                    "type": [
+                        "number",
+                        "null"
+                    ]
+                },
+                "tissue_fixation_hours": {
+                    "minimum": 0,
+                    "type": [
+                        "number",
+                        "null"
+                    ]
+                },
+                "tissue_preparation_format": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "tissue_specimen_category": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "tissue_sufficiency": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "tumor_cellularity_percent": {
+                    "maximum": 100,
+                    "minimum": 0,
+                    "type": [
+                        "number",
+                        "null"
+                    ]
+                }
+            },
+            "required": [
+                "biopsy_id",
+                "patient_id",
+                "biopsy_date"
+            ],
+            "title": "Biopsy",
+            "type": "object"
+        },
+        "ClinicalAssessment": {
+            "additionalProperties": false,
+            "description": "Longitudinal clinical status (ECOG, symptoms, labs) - multiple rows per patient",
+            "properties": {
+                "alt": {
+                    "minimum": 0,
+                    "type": [
+                        "number",
+                        "null"
+                    ]
+                },
+                "assessment_date": {
+                    "format": "date",
+                    "type": "string"
+                },
+                "ast": {
+                    "minimum": 0,
+                    "type": [
+                        "number",
+                        "null"
+                    ]
+                },
+                "clinical_assessment_id": {
+                    "type": "string"
+                },
+                "ecog_status": {
+                    "maximum": 5,
+                    "minimum": 0,
+                    "type": [
+                        "integer",
+                        "null"
+                    ]
+                },
+                "egfr_value": {
+                    "maximum": 200,
+                    "minimum": 0,
+                    "type": [
+                        "number",
+                        "null"
+                    ]
+                },
+                "hemoglobin": {
+                    "minimum": 0,
+                    "type": [
+                        "number",
+                        "null"
+                    ]
+                },
+                "neutrophils": {
+                    "minimum": 0,
+                    "type": [
+                        "number",
+                        "null"
+                    ]
+                },
+                "patient_id": {
+                    "pattern": "^NGDX-[0-9]{3}$",
+                    "type": "string"
+                },
+                "platelets": {
+                    "minimum": 0,
+                    "type": [
+                        "number",
+                        "null"
+                    ]
+                },
+                "symptom_severity_grade": {
+                    "maximum": 5,
+                    "minimum": 0,
+                    "type": [
+                        "integer",
+                        "null"
+                    ]
+                },
+                "symptoms_coded": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "visit_type": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "wbc": {
+                    "minimum": 0,
+                    "type": [
+                        "number",
+                        "null"
+                    ]
+                }
+            },
+            "required": [
+                "clinical_assessment_id",
+                "patient_id",
+                "assessment_date"
+            ],
+            "title": "ClinicalAssessment",
+            "type": "object"
+        },
+        "DetectionTimepointEnum": {
+            "description": "",
+            "enum": [
+                "Baseline",
+                "Progression",
+                "MRD",
+                "Post_treatment"
+            ],
+            "title": "DetectionTimepointEnum",
+            "type": "string"
+        },
+        "DiscontinuationReasonEnum": {
+            "description": "",
+            "enum": [
+                "Progression",
+                "Toxicity",
+                "Patient_choice",
+                "Death",
+                "Treatment_completion"
+            ],
+            "title": "DiscontinuationReasonEnum",
+            "type": "string"
+        },
+        "DoseFrequencyEnum": {
+            "description": "",
+            "enum": [
+                "OD",
+                "BD",
+                "TID",
+                "q3w",
+                "weekly"
+            ],
+            "title": "DoseFrequencyEnum",
+            "type": "string"
+        },
+        "ImagingModalityEnum": {
+            "description": "",
+            "enum": [
+                "CT",
+                "PT",
+                "MR",
+                "CR",
+                "US"
+            ],
+            "title": "ImagingModalityEnum",
+            "type": "string"
+        },
+        "ImagingStudy": {
+            "additionalProperties": false,
+            "description": "Imaging study (CT, PET, MRI) with TNM staging - multiple rows per patient",
+            "properties": {
+                "accession_number": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "ajcc_stage": {
+                    "$ref": "#/$defs/AJCCStageEnum"
+                },
+                "brain_largest_lesion_mm": {
+                    "minimum": 0,
+                    "type": [
+                        "number",
+                        "null"
+                    ]
+                },
+                "brain_lesion_count": {
+                    "minimum": 0,
+                    "type": [
+                        "integer",
+                        "null"
+                    ]
+                },
+                "brain_metastasis_present": {
+                    "type": [
+                        "boolean",
+                        "null"
+                    ]
+                },
+                "ct_kvp": {
+                    "minimum": 0,
+                    "type": [
+                        "integer",
+                        "null"
+                    ]
+                },
+                "ct_mas": {
+                    "minimum": 0,
+                    "type": [
+                        "number",
+                        "null"
+                    ]
+                },
+                "ct_slice_thickness_mm": {
+                    "minimum": 0,
+                    "type": [
+                        "number",
+                        "null"
+                    ]
+                },
+                "dicom_file_path": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "imaging_modality": {
+                    "$ref": "#/$defs/ImagingModalityEnum"
+                },
+                "imaging_study_id": {
+                    "type": "string"
+                },
+                "m_sites": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "m_stage": {
+                    "$ref": "#/$defs/MStageEnum"
+                },
+                "n_stage": {
+                    "$ref": "#/$defs/NStageEnum"
+                },
+                "patient_id": {
+                    "pattern": "^NGDX-[0-9]{3}$",
+                    "type": "string"
+                },
+                "pet_injected_dose_mbq": {
+                    "minimum": 0,
+                    "type": [
+                        "number",
+                        "null"
+                    ]
+                },
+                "pet_tracer": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "pet_uptake_time_min": {
+                    "minimum": 0,
+                    "type": [
+                        "number",
+                        "null"
+                    ]
+                },
+                "primary_tumor_diameter_mm": {
+                    "maximum": 300,
+                    "minimum": 0,
+                    "type": [
+                        "number",
+                        "null"
+                    ]
+                },
+                "scan_date": {
+                    "format": "date",
+                    "type": "string"
+                },
+                "series_uid": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "study_description": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "study_uid": {
+                    "pattern": "^[0-9.]{1,64}$",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "suv_max": {
+                    "maximum": 50,
+                    "minimum": 0,
+                    "type": [
+                        "number",
+                        "null"
+                    ]
+                },
+                "t_stage": {
+                    "$ref": "#/$defs/TStageEnum"
+                },
+                "thumbnail_image_path": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                }
+            },
+            "required": [
+                "imaging_study_id",
+                "patient_id",
+                "scan_date"
+            ],
+            "title": "ImagingStudy",
+            "type": "object"
+        },
+        "MStageEnum": {
+            "description": "",
+            "enum": [
+                "M0",
+                "M1a",
+                "M1b",
+                "M1c"
+            ],
+            "title": "MStageEnum",
+            "type": "string"
+        },
+        "MolecularTest": {
+            "additionalProperties": false,
+            "description": "NGS test from tissue or ctDNA - multiple rows per patient",
+            "properties": {
+                "assay_lod_percent": {
+                    "maximum": 100,
+                    "minimum": 0,
+                    "type": [
+                        "number",
+                        "null"
+                    ]
+                },
+                "biopsy_id": {
+                    "type": "string"
+                },
+                "dna_input_mass_ng": {
+                    "minimum": 0,
+                    "type": [
+                        "number",
+                        "null"
+                    ]
+                },
+                "mean_coverage_depth": {
+                    "minimum": 0,
+                    "type": [
+                        "number",
+                        "null"
+                    ]
+                },
+                "molecular_test_id": {
+                    "type": "string"
+                },
+                "ngs_assay_type": {
+                    "$ref": "#/$defs/NGSAssayTypeEnum"
+                },
+                "ngs_panel_name": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "ngs_panel_version": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "ngs_report_pdf_path": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "patient_id": {
+                    "pattern": "^NGDX-[0-9]{3}$",
+                    "type": "string"
+                },
+                "specimen_source": {
+                    "$ref": "#/$defs/SpecimenSourceEnum"
+                },
+                "test_date": {
+                    "format": "date",
+                    "type": "string"
+                },
+                "vcf_file_path": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                }
+            },
+            "required": [
+                "molecular_test_id",
+                "patient_id",
+                "biopsy_id",
+                "test_date"
+            ],
+            "title": "MolecularTest",
+            "type": "object"
+        },
+        "Mutation": {
+            "additionalProperties": false,
+            "description": "Individual genomic variant detected in NGS test - normalized to enable time-series tracking",
+            "properties": {
+                "actionable_mutation": {
+                    "type": [
+                        "boolean",
+                        "null"
+                    ]
+                },
+                "chip_status": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "detection_timepoint": {
+                    "$ref": "#/$defs/DetectionTimepointEnum"
+                },
+                "gene_symbol": {
+                    "pattern": "^[A-Z0-9-]+$",
+                    "type": "string"
+                },
+                "is_acquired_resistance": {
+                    "type": [
+                        "boolean",
+                        "null"
+                    ]
+                },
+                "is_primary_driver": {
+                    "type": [
+                        "boolean",
+                        "null"
+                    ]
+                },
+                "molecular_test_id": {
+                    "type": "string"
+                },
+                "mutation_classification": {
+                    "$ref": "#/$defs/VariantTierEnum"
+                },
+                "mutation_hgvs": {
+                    "pattern": "^[cp]\\..+$",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "mutation_id": {
+                    "type": "string"
+                },
+                "mutation_type": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "patient_id": {
+                    "pattern": "^NGDX-[0-9]{3}$",
+                    "type": "string"
+                },
+                "resistance_mutation": {
+                    "type": [
+                        "boolean",
+                        "null"
+                    ]
+                },
+                "tumor_fraction_percent": {
+                    "maximum": 100.0,
+                    "minimum": 0.0,
+                    "type": [
+                        "number",
+                        "null"
+                    ]
+                },
+                "vaf_percent": {
+                    "maximum": 100.0,
+                    "minimum": 0.0,
+                    "type": [
+                        "number",
+                        "null"
+                    ]
+                }
+            },
+            "required": [
+                "mutation_id",
+                "molecular_test_id",
+                "patient_id",
+                "gene_symbol"
+            ],
+            "title": "Mutation",
+            "type": "object"
+        },
+        "NGSAssayTypeEnum": {
+            "description": "",
+            "enum": [
+                "DNA_only",
+                "RNA_only",
+                "Concurrent_DNA_and_RNA"
+            ],
+            "title": "NGSAssayTypeEnum",
+            "type": "string"
+        },
+        "NStageEnum": {
+            "description": "",
+            "enum": [
+                "NX",
+                "N0",
+                "N1",
+                "N2",
+                "N3"
+            ],
+            "title": "NStageEnum",
+            "type": "string"
+        },
+        "Patient": {
+            "additionalProperties": false,
+            "description": "Core patient entity with demographics and baseline clinical data",
+            "properties": {
+                "age_at_diagnosis": {
+                    "maximum": 130,
+                    "minimum": 0,
+                    "type": [
+                        "integer",
+                        "null"
+                    ]
+                },
+                "baseline_alt": {
+                    "minimum": 0,
+                    "type": [
+                        "number",
+                        "null"
+                    ]
+                },
+                "baseline_ast": {
+                    "minimum": 0,
+                    "type": [
+                        "number",
+                        "null"
+                    ]
+                },
+                "baseline_egfr": {
+                    "maximum": 200,
+                    "minimum": 0,
+                    "type": [
+                        "number",
+                        "null"
+                    ]
+                },
+                "baseline_hemoglobin": {
+                    "minimum": 0,
+                    "type": [
+                        "number",
+                        "null"
+                    ]
+                },
+                "baseline_platelets": {
+                    "minimum": 0,
+                    "type": [
+                        "number",
+                        "null"
+                    ]
+                },
+                "baseline_wbc": {
+                    "minimum": 0,
+                    "type": [
+                        "number",
+                        "null"
+                    ]
+                },
+                "diagnosis_date": {
+                    "format": "date",
+                    "type": "string"
+                },
+                "diagnosis_pathway": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "ecog_baseline": {
+                    "maximum": 5,
+                    "minimum": 0,
+                    "type": [
+                        "integer",
+                        "null"
+                    ]
+                },
+                "ethnicity_code": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "family_history_lung_cancer": {
+                    "type": [
+                        "boolean",
+                        "null"
+                    ]
+                },
+                "nhs_number": {
+                    "pattern": "^[0-9]{10}$",
+                    "type": "string"
+                },
+                "pack_years": {
+                    "maximum": 200,
+                    "minimum": 0,
+                    "type": [
+                        "number",
+                        "null"
+                    ]
+                },
+                "patient_id": {
+                    "pattern": "^NGDX-[0-9]{3}$",
+                    "type": "string"
+                },
+                "sex": {
+                    "$ref": "#/$defs/SexEnum"
+                },
+                "smoking_status": {
+                    "$ref": "#/$defs/SmokingStatusEnum"
+                }
+            },
+            "required": [
+                "patient_id",
+                "nhs_number",
+                "diagnosis_date"
+            ],
+            "title": "Patient",
+            "type": "object"
+        },
+        "ProgressionTypeEnum": {
+            "description": "",
+            "enum": [
+                "Oligoprogression",
+                "Systemic_multi_site",
+                "CNS_only",
+                "Asymptomatic_slow"
+            ],
+            "title": "ProgressionTypeEnum",
+            "type": "string"
+        },
+        "RECISTResponseEnum": {
+            "description": "",
+            "enum": [
+                "CR",
+                "PR",
+                "SD",
+                "PD"
+            ],
+            "title": "RECISTResponseEnum",
+            "type": "string"
+        },
+        "ResponseAssessment": {
+            "additionalProperties": false,
+            "description": "Serial treatment response monitoring (RECIST + ctDNA) - multiple rows per patient",
+            "properties": {
+                "assessment_date": {
+                    "format": "date",
+                    "type": "string"
+                },
+                "assessment_id": {
+                    "type": "string"
+                },
+                "assessment_type": {
+                    "$ref": "#/$defs/AssessmentTypeEnum"
+                },
+                "ctdna_mutation_cleared": {
+                    "type": [
+                        "boolean",
+                        "null"
+                    ]
+                },
+                "ctdna_tumor_fraction_percent": {
+                    "maximum": 100.0,
+                    "minimum": 0.0,
+                    "type": [
+                        "number",
+                        "null"
+                    ]
+                },
+                "ctdna_vaf_percent": {
+                    "maximum": 100.0,
+                    "minimum": 0.0,
+                    "type": [
+                        "number",
+                        "null"
+                    ]
+                },
+                "ecog_status": {
+                    "maximum": 5,
+                    "minimum": 0,
+                    "type": [
+                        "integer",
+                        "null"
+                    ]
+                },
+                "histologic_transformation": {
+                    "type": [
+                        "boolean",
+                        "null"
+                    ]
+                },
+                "imaging_study_id": {
+                    "type": "string"
+                },
+                "molecular_test_id": {
+                    "type": "string"
+                },
+                "new_lesions_present": {
+                    "type": [
+                        "boolean",
+                        "null"
+                    ]
+                },
+                "patient_id": {
+                    "pattern": "^NGDX-[0-9]{3}$",
+                    "type": "string"
+                },
+                "percent_change_from_baseline": {
+                    "type": [
+                        "number",
+                        "null"
+                    ]
+                },
+                "progression_detected": {
+                    "type": [
+                        "boolean",
+                        "null"
+                    ]
+                },
+                "progression_type": {
+                    "$ref": "#/$defs/ProgressionTypeEnum"
+                },
+                "recist_response": {
+                    "$ref": "#/$defs/RECISTResponseEnum"
+                },
+                "resistance_mechanism": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "resistance_mutation_detected": {
+                    "type": [
+                        "boolean",
+                        "null"
+                    ]
+                },
+                "sum_target_lesions_mm": {
+                    "maximum": 500,
+                    "minimum": 0,
+                    "type": [
+                        "number",
+                        "null"
+                    ]
+                },
+                "symptom_improvement": {
+                    "type": [
+                        "boolean",
+                        "null"
+                    ]
+                },
+                "time_to_progression_months": {
+                    "minimum": 0,
+                    "type": [
+                        "number",
+                        "null"
+                    ]
+                },
+                "treatment_id": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "assessment_id",
+                "patient_id",
+                "treatment_id",
+                "imaging_study_id",
+                "molecular_test_id",
+                "assessment_date"
+            ],
+            "title": "ResponseAssessment",
+            "type": "object"
+        },
+        "SexEnum": {
+            "description": "",
+            "enum": [
+                "Male",
+                "Female",
+                "Indeterminate",
+                "Not_Known"
+            ],
+            "title": "SexEnum",
+            "type": "string"
+        },
+        "SmokingStatusEnum": {
+            "description": "",
+            "enum": [
+                "Current_smoker",
+                "Former_smoker",
+                "Never_smoked",
+                "Non_smoker_unknown_history",
+                "Not_stated",
+                "Unknown"
+            ],
+            "title": "SmokingStatusEnum",
+            "type": "string"
+        },
+        "SpecimenSourceEnum": {
+            "description": "",
+            "enum": [
+                "Tissue",
+                "ctDNA"
+            ],
+            "title": "SpecimenSourceEnum",
+            "type": "string"
+        },
+        "SpecimenTypeEnum": {
+            "description": "",
+            "enum": [
+                "Tissue",
+                "ctDNA"
+            ],
+            "title": "SpecimenTypeEnum",
+            "type": "string"
+        },
+        "TStageEnum": {
+            "description": "",
+            "enum": [
+                "TX",
+                "T0",
+                "Tis",
+                "T1a",
+                "T1b",
+                "T1c",
+                "T2a",
+                "T2b",
+                "T3",
+                "T4"
+            ],
+            "title": "TStageEnum",
+            "type": "string"
+        },
+        "Treatment": {
+            "additionalProperties": false,
+            "description": "Treatment line with drug regimen and duration - multiple rows per patient",
+            "properties": {
+                "discontinuation_reason": {
+                    "$ref": "#/$defs/DiscontinuationReasonEnum"
+                },
+                "drug_dose_mg": {
+                    "minimum": 0,
+                    "type": [
+                        "number",
+                        "null"
+                    ]
+                },
+                "drug_frequency": {
+                    "$ref": "#/$defs/DoseFrequencyEnum"
+                },
+                "drug_name": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "drug_route": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "mdt_date": {
+                    "format": "date",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "mdt_recommendation": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "months_since_last_ici": {
+                    "minimum": 0,
+                    "type": [
+                        "number",
+                        "null"
+                    ]
+                },
+                "patient_id": {
+                    "pattern": "^NGDX-[0-9]{3}$",
+                    "type": "string"
+                },
+                "prior_ici_exposure": {
+                    "type": [
+                        "boolean",
+                        "null"
+                    ]
+                },
+                "treatment_end_date": {
+                    "format": "date",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "treatment_id": {
+                    "type": "string"
+                },
+                "treatment_intent": {
+                    "$ref": "#/$defs/TreatmentIntentEnum"
+                },
+                "treatment_line": {
+                    "maximum": 10,
+                    "minimum": 0,
+                    "type": [
+                        "integer",
+                        "null"
+                    ]
+                },
+                "treatment_start_date": {
+                    "format": "date",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "treatment_id",
+                "patient_id",
+                "treatment_start_date"
+            ],
+            "title": "Treatment",
+            "type": "object"
+        },
+        "TreatmentIntentEnum": {
+            "description": "",
+            "enum": [
+                "Curative_definitive",
+                "Palliative",
+                "Adjuvant",
+                "Neoadjuvant"
+            ],
+            "title": "TreatmentIntentEnum",
+            "type": "string"
+        },
+        "VariantTierEnum": {
+            "description": "",
+            "enum": [
+                "Tier_I",
+                "Tier_II",
+                "Tier_III",
+                "Tier_IV"
+            ],
+            "title": "VariantTierEnum",
+            "type": "string"
+        }
+    },
+    "$id": "https://ngdx.org/clinical_model",
+    "$schema": "https://json-schema.org/draft/2019-09/schema",
+    "additionalProperties": true,
+    "metamodel_version": "1.7.0",
+    "title": "clinical_model",
+    "type": "object",
+    "version": "1.0.0"
+}
+

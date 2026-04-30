@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Status</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        .pass { color: green; font-weight: bold; }
+        .fail { color: red; font-weight: bold; }
+        .section { margin: 20px 0; padding: 10px; border: 1px solid #ccc; }
+    </style>
+</head>
+<body>
+    <h1>Frontend Integration Test</h1>
+    <div id="results"></div>
+
+    <script>
+        const results = document.getElementById('results');
+
+        async function runTests() {
+            const tests = [];
+
+            // Test 1: Backend API
+            try {
+                const response = await fetch('http://localhost:8000/api/patients');
+                const data = await response.json();
+                tests.push({
+                    name: 'Backend API',
+                    pass: data.total === 5,
+                    details: `Found ${data.total} patients`
+                });
+            } catch (e) {
+                tests.push({
+                    name: 'Backend API',
+                    pass: false,
+                    details: `Error: ${e.message}`
+                });
+            }
+
+            // Test 2: CPI Logo
+            try {
+                const response = await fetch('http://localhost:5174/assets/cpi-logo.png');
+                tests.push({
+                    name: 'CPI Logo',
+                    pass: response.ok,
+                    details: `Status: ${response.status}`
+                });
+            } catch (e) {
+                tests.push({
+                    name: 'CPI Logo',
+                    pass: false,
+                    details: `Error: ${e.message}`
+                });
+            }
+
+            // Display results
+            tests.forEach(test => {
+                const div = document.createElement('div');
+                div.className = 'section';
+                div.innerHTML = `
+                    <strong>${test.name}:</strong>
+                    <span class="${test.pass ? 'pass' : 'fail'}">${test.pass ? '✅ PASS' : '❌ FAIL'}</span>
+                    <br><small>${test.details}</small>
+                `;
+                results.appendChild(div);
+            });
+        }
+
+        runTests();
+    </script>
+</body>
+</html>

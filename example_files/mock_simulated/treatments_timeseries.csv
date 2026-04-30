@@ -1,0 +1,5 @@
+patient_id,treatment_id,treatment_line,treatment_intent,drug_name,drug_dose_mg,drug_frequency,drug_route,treatment_start_date,treatment_end_date,discontinuation_reason,mdt_recommendation
+NGDX-001,TX-NGDX-001-002,1,Adjuvant,Osimertinib,80,OD,Oral,2020-05-07,2022-08-05,Progression,Continue Osimertinib as adjuvant therapy
+NGDX-001,TX-NGDX-001-003,2,Palliative,Osimertinib_plus_Savolitinib,80 + 600,OD,Oral,2022-08-20,2023-02-18,Ongoing,Clinical trial: Osimertinib + MET inhibitor for T790M + MET amp resistance
+NGDX-002,TX-NGDX-002-002,1,Adjuvant,Carboplatin_Pemetrexed,,q3w,IV,2023-05-19,2024-05-18,Treatment_completion,Continue Carboplatin_Pemetrexed as adjuvant therapy
+NGDX-005,TX-NGDX-005-002,1,Adjuvant,Carboplatin_Pemetrexed,,q3w,IV,2020-04-19,2021-04-19,Treatment_completion,Continue Carboplatin_Pemetrexed as adjuvant therapy

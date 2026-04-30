@@ -1,0 +1,90 @@
+@import "tailwindcss";
+
+/* CPI Custom Color Variables for Tailwind v4 */
+@theme {
+  --color-cpi-blue: #0058AA;
+  --color-cpi-blue-50: #E7EDF2;
+  --color-cpi-blue-100: #e0e9f7;
+  --color-cpi-blue-200: #0072dd;
+  --color-cpi-blue-300: #006fa0;
+  --color-cpi-blue-400: #0058AA;
+  --color-cpi-blue-500: #004E98;
+  --color-cpi-blue-600: #003E77;
+  --color-cpi-blue-700: #002F58;
+  --color-cpi-blue-800: #001d38;
+  --color-cpi-blue-900: #00172b;
+
+  --color-cpi-red: #d3353d;
+  --color-cpi-red-light: #dc5f65;
+  --color-cpi-red-dark: #af262d;
+  --color-cpi-red-bg: #F6E5E5;
+
+  --color-cpi-orange: #ff9200;
+  --color-cpi-orange-light: #ffbe66;
+  --color-cpi-orange-bg: #fefbf3;
+
+  --color-cpi-teal: #007169;
+}
+
+/* Global styles */
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #f9fafb;
+  color: #111827;
+  font-family: Inter, 'Helvetica Neue', Arial, sans-serif;
+}
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+}
+
+/* Custom scrollbar for webkit browsers */
+.scrollbar-thin::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: #0058AA;
+  border-radius: 4px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: #003E77;
+}
+
+/* Print styles for clinical documentation */
+@media print {
+  /* Hide non-essential elements */
+  .no-print,
+  header,
+  footer,
+  button,
+  input[type="checkbox"] {
+    display: none !important;
+  }
+
+  /* Force white background */
+  body {
+    background: white !important;
+  }
+
+  /* Avoid page breaks inside cards */
+  .card, .border {
+    page-break-inside: avoid;
+  }
+
+  /* Show URLs in links */
+  a[href]:after {
+    content: " (" attr(href) ")";
+    font-size: 0.8em;
+    color: #666;
+  }
+}

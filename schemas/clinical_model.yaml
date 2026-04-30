@@ -1,0 +1,885 @@
+id: https://ngdx.org/clinical_model
+name: clinical_model
+title: NG-DX EGFR-NSCLC Clinical Data Model
+description: Clinical data model for EGFR-mutant NSCLC diagnostic pathway
+license: MIT
+version: 1.0.0
+
+prefixes:
+  linkml: https://w3id.org/linkml/
+  snomed: http://snomed.info/id/
+  loinc: http://loinc.org/rdf/
+  clinical_model: https://uk-cpi.com/clinical_model/
+
+default_prefix: clinical_model
+default_range: string
+
+imports:
+  - linkml:types
+
+classes:
+  Patient:
+    description: Core patient entity with demographics and baseline clinical data
+    slots:
+      - patient_id
+      - nhs_number
+      - age_at_diagnosis
+      - sex
+      - ethnicity_code
+      - smoking_status
+      - pack_years
+      - family_history_lung_cancer
+      - ecog_baseline
+      - baseline_egfr
+      - baseline_wbc
+      - baseline_hemoglobin
+      - baseline_platelets
+      - baseline_alt
+      - baseline_ast
+      - diagnosis_date
+      - diagnosis_pathway
+    slot_usage:
+      patient_id:
+        range: string
+
+  Biopsy:
+    description: Tissue or liquid biopsy procedure - multiple rows per patient
+    slots:
+      - biopsy_id
+      - patient_id
+      - biopsy_date
+      - specimen_type
+      - biopsy_technique
+      - biopsy_site_snomed
+      - biopsy_site_description
+      - tissue_specimen_category
+      - tissue_preparation_format
+      - tissue_fixation_hours
+      - tumor_cellularity_percent
+      - necrosis_percent
+      - pathology_slide_image_path
+      - pathology_report_pdf_path
+      - blood_tube_type
+      - blood_collection_volume_ml
+      - blood_draw_timestamp
+      - time_to_fractionation_hours
+      - plasma_volume_ml
+      - cfdna_concentration_ng_ul
+      - cfdna_total_yield_ng
+      - histologic_subtype
+      - pdl1_tps_percent
+      - pdl1_antibody_clone
+      - specimen_adequacy
+      - tissue_sufficiency
+    slot_usage:
+      biopsy_id:
+        range: string
+      patient_id:
+        identifier: false
+
+  MolecularTest:
+    description: NGS test from tissue or ctDNA - multiple rows per patient
+    slots:
+      - molecular_test_id
+      - biopsy_id
+      - test_date
+      - specimen_source
+      - ngs_panel_name
+      - ngs_panel_version
+      - ngs_assay_type
+      - dna_input_mass_ng
+      - mean_coverage_depth
+      - assay_lod_percent
+      - ngs_report_pdf_path
+      - vcf_file_path
+    slot_usage:
+      molecular_test_id:
+        range: string
+      biopsy_id:
+        identifier: false
+
+  Mutation:
+    description: Individual genomic variant detected in NGS test - normalized to enable time-series tracking
+    slots:
+      - mutation_id
+      - molecular_test_id
+      - gene_symbol
+      - mutation_hgvs
+      - mutation_type
+      - mutation_classification
+      - vaf_percent
+      - tumor_fraction_percent
+      - actionable_mutation
+      - resistance_mutation
+      - chip_status
+      - is_primary_driver
+      - is_acquired_resistance
+      - detection_timepoint
+    slot_usage:
+      mutation_id:
+        range: string
+      molecular_test_id:
+        identifier: false
+        required: true
+
+  Treatment:
+    description: Treatment line with drug regimen and duration - multiple rows per patient
+    slots:
+      - treatment_id
+      - patient_id
+      - treatment_line
+      - treatment_intent
+      - drug_name
+      - drug_dose_mg
+      - drug_frequency
+      - drug_route
+      - treatment_start_date
+      - treatment_end_date
+      - mdt_recommendation
+      - mdt_date
+      - prior_ici_exposure
+      - months_since_last_ici
+      - discontinuation_reason
+    slot_usage:
+      treatment_id:
+        range: string
+      patient_id:
+        identifier: false
+
+  ResponseAssessment:
+    description: Serial treatment response monitoring (RECIST + ctDNA) - multiple rows per patient
+    slots:
+      - assessment_id
+      - patient_id
+      - treatment_id
+      - imaging_study_id
+      - molecular_test_id
+      - assessment_date
+      - assessment_type
+      - recist_response
+      - sum_target_lesions_mm
+      - percent_change_from_baseline
+      - new_lesions_present
+      - ctdna_vaf_percent
+      - ctdna_mutation_cleared
+      - ctdna_tumor_fraction_percent
+      - ecog_status
+      - symptom_improvement
+      - progression_detected
+      - progression_type
+      - time_to_progression_months
+      - resistance_mutation_detected
+      - resistance_mechanism
+      - histologic_transformation
+    slot_usage:
+      assessment_id:
+        range: string
+      patient_id:
+        identifier: false
+      treatment_id:
+        identifier: false
+        required: false
+      imaging_study_id:
+        identifier: false
+        required: false
+      molecular_test_id:
+        identifier: false
+        required: false
+
+  ClinicalAssessment:
+    description: Longitudinal clinical status (ECOG, symptoms, labs) - multiple rows per patient
+    slots:
+      - clinical_assessment_id
+      - patient_id
+      - assessment_date
+      - visit_type
+      - ecog_status
+      - symptoms_coded
+      - symptom_severity_grade
+      - wbc
+      - hemoglobin
+      - platelets
+      - neutrophils
+      - egfr_value
+      - alt
+      - ast
+    slot_usage:
+      clinical_assessment_id:
+        range: string
+      patient_id:
+        identifier: false
+      ecog_status:
+        identifier: false
+
+  ImagingStudy:
+    description: Imaging study (CT, PET, MRI) with TNM staging - multiple rows per patient
+    slots:
+      - imaging_study_id
+      - patient_id
+      - study_uid
+      - series_uid
+      - accession_number
+      - scan_date
+      - imaging_modality
+      - study_description
+      - dicom_file_path
+      - thumbnail_image_path
+      - ct_kvp
+      - ct_mas
+      - ct_slice_thickness_mm
+      - pet_tracer
+      - pet_injected_dose_mbq
+      - pet_uptake_time_min
+      - t_stage
+      - n_stage
+      - m_stage
+      - m_sites
+      - ajcc_stage
+      - primary_tumor_diameter_mm
+      - suv_max
+      - brain_metastasis_present
+      - brain_lesion_count
+      - brain_largest_lesion_mm
+    slot_usage:
+      imaging_study_id:
+        range: string
+      patient_id:
+        identifier: false
+
+slots:
+  patient_id:
+    identifier: true
+    required: true
+    range: Patient
+    pattern: "^NGDX-[0-9]{3}$"
+
+  nhs_number:
+    required: true
+    pattern: "^[0-9]{10}$"
+
+  age_at_diagnosis:
+    range: integer
+    minimum_value: 0
+    maximum_value: 130
+
+  sex:
+    range: SexEnum
+
+  diagnosis_date:
+    range: date
+    required: true
+
+  ethnicity_code:
+    range: string
+
+  smoking_status:
+    range: SmokingStatusEnum
+
+  pack_years:
+    range: float
+    minimum_value: 0
+    maximum_value: 200
+
+  family_history_lung_cancer:
+    range: boolean
+
+  ecog_baseline:
+    range: integer
+    minimum_value: 0
+    maximum_value: 5
+
+  baseline_egfr:
+    range: float
+    minimum_value: 0
+    maximum_value: 200
+
+  baseline_wbc:
+    range: float
+    minimum_value: 0
+
+  baseline_hemoglobin:
+    range: float
+    minimum_value: 0
+
+  baseline_platelets:
+    range: float
+    minimum_value: 0
+
+  baseline_alt:
+    range: float
+    minimum_value: 0
+
+  baseline_ast:
+    range: float
+    minimum_value: 0
+
+  diagnosis_pathway:
+    range: string
+
+  imaging_study_id:
+    identifier: true
+    required: true
+    range: ImagingStudy
+
+  scan_date:
+    range: date
+    required: true
+
+  imaging_modality:
+    range: ImagingModalityEnum
+
+  t_stage:
+    range: TStageEnum
+
+  n_stage:
+    range: NStageEnum
+
+  m_stage:
+    range: MStageEnum
+
+  primary_tumor_diameter_mm:
+    range: float
+    minimum_value: 0
+    maximum_value: 300
+
+  study_uid:
+    range: string
+    pattern: "^[0-9.]{1,64}$"
+
+  series_uid:
+    range: string
+
+  accession_number:
+    range: string
+
+  study_description:
+    range: string
+
+  dicom_file_path:
+    range: string
+
+  thumbnail_image_path:
+    range: string
+
+  ct_kvp:
+    range: integer
+    minimum_value: 0
+
+  ct_mas:
+    range: float
+    minimum_value: 0
+
+  ct_slice_thickness_mm:
+    range: float
+    minimum_value: 0
+
+  pet_tracer:
+    range: string
+
+  pet_injected_dose_mbq:
+    range: float
+    minimum_value: 0
+
+  pet_uptake_time_min:
+    range: float
+    minimum_value: 0
+
+  m_sites:
+    range: string
+
+  ajcc_stage:
+    range: AJCCStageEnum
+
+  suv_max:
+    range: float
+    minimum_value: 0
+    maximum_value: 50
+
+  brain_metastasis_present:
+    range: boolean
+
+  brain_lesion_count:
+    range: integer
+    minimum_value: 0
+
+  brain_largest_lesion_mm:
+    range: float
+    minimum_value: 0
+
+  biopsy_id:
+    identifier: true
+    required: true
+    range: Biopsy
+
+  biopsy_date:
+    range: date
+    required: true
+
+  specimen_type:
+    range: SpecimenTypeEnum
+
+  biopsy_technique:
+    range: string
+
+  biopsy_site_snomed:
+    range: string
+
+  biopsy_site_description:
+    range: string
+
+  tissue_specimen_category:
+    range: string
+
+  tissue_preparation_format:
+    range: string
+
+  tissue_fixation_hours:
+    range: float
+    minimum_value: 0
+
+  tumor_cellularity_percent:
+    range: float
+    minimum_value: 0
+    maximum_value: 100
+
+  necrosis_percent:
+    range: float
+    minimum_value: 0
+    maximum_value: 100
+
+  pathology_slide_image_path:
+    range: string
+
+  pathology_report_pdf_path:
+    range: string
+
+  blood_tube_type:
+    range: string
+
+  blood_collection_volume_ml:
+    range: float
+    minimum_value: 0
+
+  blood_draw_timestamp:
+    range: datetime
+
+  time_to_fractionation_hours:
+    range: float
+    minimum_value: 0
+
+  plasma_volume_ml:
+    range: float
+    minimum_value: 0
+
+  cfdna_concentration_ng_ul:
+    range: float
+    minimum_value: 0
+
+  cfdna_total_yield_ng:
+    range: float
+    minimum_value: 0
+
+  histologic_subtype:
+    range: string
+
+  pdl1_tps_percent:
+    range: integer
+    minimum_value: 0
+    maximum_value: 100
+
+  pdl1_antibody_clone:
+    range: string
+
+  specimen_adequacy:
+    range: string
+
+  tissue_sufficiency:
+    range: string
+
+  molecular_test_id:
+    identifier: true
+    required: true
+    range: MolecularTest
+
+  test_date:
+    range: date
+    required: true
+
+  specimen_source:
+    range: SpecimenSourceEnum
+
+  ngs_panel_name:
+    range: string
+
+  ngs_panel_version:
+    range: string
+
+  ngs_assay_type:
+    range: NGSAssayTypeEnum
+
+  dna_input_mass_ng:
+    range: float
+    minimum_value: 0
+
+  mean_coverage_depth:
+    range: float
+    minimum_value: 0
+
+  assay_lod_percent:
+    range: float
+    minimum_value: 0
+    maximum_value: 100
+
+  ngs_report_pdf_path:
+    range: string
+
+  vcf_file_path:
+    range: string
+
+  mutation_id:
+    identifier: true
+    required: true
+
+  gene_symbol:
+    range: string
+    required: true
+    pattern: "^[A-Z0-9-]+$"
+
+  mutation_hgvs:
+    range: string
+    pattern: "^[cp]\\..+$"
+
+  mutation_type:
+    range: string
+
+  mutation_classification:
+    range: VariantTierEnum
+
+  vaf_percent:
+    range: float
+    minimum_value: 0.0
+    maximum_value: 100.0
+
+  tumor_fraction_percent:
+    range: float
+    minimum_value: 0.0
+    maximum_value: 100.0
+
+  actionable_mutation:
+    range: boolean
+
+  resistance_mutation:
+    range: boolean
+
+  chip_status:
+    range: string
+
+  is_primary_driver:
+    range: boolean
+
+  is_acquired_resistance:
+    range: boolean
+
+  detection_timepoint:
+    range: DetectionTimepointEnum
+
+  treatment_id:
+    identifier: true
+    required: true
+    range: Treatment
+
+  treatment_line:
+    range: integer
+    minimum_value: 0
+    maximum_value: 10
+
+  treatment_intent:
+    range: TreatmentIntentEnum
+
+  drug_name:
+    range: string
+
+  drug_dose_mg:
+    range: float
+    minimum_value: 0
+
+  drug_frequency:
+    range: DoseFrequencyEnum
+
+  drug_route:
+    range: string
+
+  treatment_start_date:
+    range: date
+    required: true
+
+  treatment_end_date:
+    range: date
+
+  mdt_recommendation:
+    range: string
+
+  mdt_date:
+    range: date
+
+  prior_ici_exposure:
+    range: boolean
+
+  months_since_last_ici:
+    range: float
+    minimum_value: 0
+
+  discontinuation_reason:
+    range: DiscontinuationReasonEnum
+
+  assessment_id:
+    identifier: true
+    required: true
+    range: ResponseAssessment
+
+  assessment_date:
+    range: date
+    required: true
+
+  assessment_type:
+    range: AssessmentTypeEnum
+
+  recist_response:
+    range: RECISTResponseEnum
+
+  sum_target_lesions_mm:
+    range: float
+    minimum_value: 0
+    maximum_value: 500
+
+  percent_change_from_baseline:
+    range: float
+
+  new_lesions_present:
+    range: boolean
+
+  ctdna_vaf_percent:
+    range: float
+    minimum_value: 0.0
+    maximum_value: 100.0
+
+  ctdna_mutation_cleared:
+    range: boolean
+
+  ctdna_tumor_fraction_percent:
+    range: float
+    minimum_value: 0.0
+    maximum_value: 100.0
+
+  ecog_status:
+    range: integer
+    minimum_value: 0
+    maximum_value: 5
+
+  symptom_improvement:
+    range: boolean
+
+  progression_detected:
+    range: boolean
+
+  progression_type:
+    range: ProgressionTypeEnum
+
+  time_to_progression_months:
+    range: float
+    minimum_value: 0
+
+  resistance_mutation_detected:
+    range: boolean
+
+  resistance_mechanism:
+    range: string
+
+  histologic_transformation:
+    range: boolean
+
+  clinical_assessment_id:
+    identifier: true
+    required: true
+    range: ClinicalAssessment
+
+  visit_type:
+    range: string
+
+  symptoms_coded:
+    range: string
+
+  symptom_severity_grade:
+    range: integer
+    minimum_value: 0
+    maximum_value: 5
+
+  wbc:
+    range: float
+    minimum_value: 0
+
+  hemoglobin:
+    range: float
+    minimum_value: 0
+
+  platelets:
+    range: float
+    minimum_value: 0
+
+  neutrophils:
+    range: float
+    minimum_value: 0
+
+  egfr_value:
+    range: float
+    minimum_value: 0
+    maximum_value: 200
+
+  alt:
+    range: float
+    minimum_value: 0
+
+  ast:
+    range: float
+    minimum_value: 0
+
+enums:
+  SexEnum:
+    permissible_values:
+      Male:
+      Female:
+      Indeterminate:
+      Not_Known:
+
+  ImagingModalityEnum:
+    permissible_values:
+      CT:
+      PT:
+      MR:
+      CR:
+      US:
+
+  TStageEnum:
+    permissible_values:
+      TX:
+      T0:
+      Tis:
+      T1a:
+      T1b:
+      T1c:
+      T2a:
+      T2b:
+      T3:
+      T4:
+
+  NStageEnum:
+    permissible_values:
+      NX:
+      N0:
+      N1:
+      N2:
+      N3:
+
+  MStageEnum:
+    permissible_values:
+      M0:
+      M1a:
+      M1b:
+      M1c:
+
+  SmokingStatusEnum:
+    permissible_values:
+      Current_smoker:
+      Former_smoker:
+      Never_smoked:
+      Non_smoker_unknown_history:
+      Not_stated:
+      Unknown:
+
+  AJCCStageEnum:
+    permissible_values:
+      Stage_0:
+      IA1:
+      IA2:
+      IA3:
+      IB:
+      IIA:
+      IIB:
+      IIIA:
+      IIIB:
+      IIIC:
+      IVA:
+      IVB:
+
+  SpecimenTypeEnum:
+    permissible_values:
+      Tissue:
+      ctDNA:
+
+  SpecimenSourceEnum:
+    permissible_values:
+      Tissue:
+      ctDNA:
+
+  NGSAssayTypeEnum:
+    permissible_values:
+      DNA_only:
+      RNA_only:
+      Concurrent_DNA_and_RNA:
+
+  VariantTierEnum:
+    permissible_values:
+      Tier_I:
+      Tier_II:
+      Tier_III:
+      Tier_IV:
+
+  DetectionTimepointEnum:
+    permissible_values:
+      Baseline:
+      Progression:
+      MRD:
+      Post_treatment:
+
+  TreatmentIntentEnum:
+    permissible_values:
+      Curative_definitive:
+      Palliative:
+      Adjuvant:
+      Neoadjuvant:
+
+  DoseFrequencyEnum:
+    permissible_values:
+      OD:
+      BD:
+      TID:
+      q3w:
+      weekly:
+
+  DiscontinuationReasonEnum:
+    permissible_values:
+      Progression:
+      Toxicity:
+      Patient_choice:
+      Death:
+      Treatment_completion:
+
+  AssessmentTypeEnum:
+    permissible_values:
+      Baseline:
+      Follow_up:
+      Progression:
+
+  RECISTResponseEnum:
+    permissible_values:
+      CR:
+      PR:
+      SD:
+      PD:
+
+  ProgressionTypeEnum:
+    permissible_values:
+      Oligoprogression:
+      Systemic_multi_site:
+      CNS_only:
+      Asymptomatic_slow:

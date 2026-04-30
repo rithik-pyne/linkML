@@ -1,0 +1,165 @@
+erDiagram
+Biopsy {
+    date biopsy_date  
+    string biopsy_id  
+    string biopsy_site_description  
+    string biopsy_site_snomed  
+    string biopsy_technique  
+    float blood_collection_volume_ml  
+    datetime blood_draw_timestamp  
+    string blood_tube_type  
+    float cfdna_concentration_ng_ul  
+    float cfdna_total_yield_ng  
+    string histologic_subtype  
+    float necrosis_percent  
+    string pathology_report_pdf_path  
+    string pathology_slide_image_path  
+    string pdl1_antibody_clone  
+    integer pdl1_tps_percent  
+    float plasma_volume_ml  
+    string specimen_adequacy  
+    SpecimenTypeEnum specimen_type  
+    float time_to_fractionation_hours  
+    float tissue_fixation_hours  
+    string tissue_preparation_format  
+    string tissue_specimen_category  
+    string tissue_sufficiency  
+    float tumor_cellularity_percent  
+}
+ClinicalAssessment {
+    float alt  
+    date assessment_date  
+    float ast  
+    string clinical_assessment_id  
+    integer ecog_status  
+    float egfr_value  
+    float hemoglobin  
+    float neutrophils  
+    float platelets  
+    integer symptom_severity_grade  
+    string symptoms_coded  
+    string visit_type  
+    float wbc  
+}
+ImagingStudy {
+    string accession_number  
+    AJCCStageEnum ajcc_stage  
+    float brain_largest_lesion_mm  
+    integer brain_lesion_count  
+    boolean brain_metastasis_present  
+    integer ct_kvp  
+    float ct_mas  
+    float ct_slice_thickness_mm  
+    string dicom_file_path  
+    ImagingModalityEnum imaging_modality  
+    string imaging_study_id  
+    string m_sites  
+    MStageEnum m_stage  
+    NStageEnum n_stage  
+    float pet_injected_dose_mbq  
+    string pet_tracer  
+    float pet_uptake_time_min  
+    float primary_tumor_diameter_mm  
+    date scan_date  
+    string series_uid  
+    string study_description  
+    string study_uid  
+    float suv_max  
+    TStageEnum t_stage  
+    string thumbnail_image_path  
+}
+MolecularTest {
+    float assay_lod_percent  
+    float dna_input_mass_ng  
+    float mean_coverage_depth  
+    string molecular_test_id  
+    NGSAssayTypeEnum ngs_assay_type  
+    string ngs_panel_name  
+    string ngs_panel_version  
+    string ngs_report_pdf_path  
+    SpecimenSourceEnum specimen_source  
+    date test_date  
+    string vcf_file_path  
+}
+Mutation {
+    boolean actionable_mutation  
+    string chip_status  
+    DetectionTimepointEnum detection_timepoint  
+    string gene_symbol  
+    boolean is_acquired_resistance  
+    boolean is_primary_driver  
+    VariantTierEnum mutation_classification  
+    string mutation_hgvs  
+    string mutation_id  
+    string mutation_type  
+    boolean resistance_mutation  
+    float tumor_fraction_percent  
+    float vaf_percent  
+}
+Patient {
+    integer age_at_diagnosis  
+    float baseline_alt  
+    float baseline_ast  
+    float baseline_egfr  
+    float baseline_hemoglobin  
+    float baseline_platelets  
+    float baseline_wbc  
+    date diagnosis_date  
+    string diagnosis_pathway  
+    integer ecog_baseline  
+    string ethnicity_code  
+    boolean family_history_lung_cancer  
+    string nhs_number  
+    float pack_years  
+    string patient_id  
+    SexEnum sex  
+    SmokingStatusEnum smoking_status  
+}
+ResponseAssessment {
+    date assessment_date  
+    string assessment_id  
+    AssessmentTypeEnum assessment_type  
+    boolean ctdna_mutation_cleared  
+    float ctdna_tumor_fraction_percent  
+    float ctdna_vaf_percent  
+    integer ecog_status  
+    boolean histologic_transformation  
+    boolean new_lesions_present  
+    float percent_change_from_baseline  
+    boolean progression_detected  
+    ProgressionTypeEnum progression_type  
+    RECISTResponseEnum recist_response  
+    string resistance_mechanism  
+    boolean resistance_mutation_detected  
+    float sum_target_lesions_mm  
+    boolean symptom_improvement  
+    float time_to_progression_months  
+}
+Treatment {
+    DiscontinuationReasonEnum discontinuation_reason  
+    float drug_dose_mg  
+    DoseFrequencyEnum drug_frequency  
+    string drug_name  
+    string drug_route  
+    date mdt_date  
+    string mdt_recommendation  
+    float months_since_last_ici  
+    boolean prior_ici_exposure  
+    date treatment_end_date  
+    string treatment_id  
+    TreatmentIntentEnum treatment_intent  
+    integer treatment_line  
+    date treatment_start_date  
+}
+
+Biopsy ||--|| Patient : "patient_id"
+ClinicalAssessment ||--|| Patient : "patient_id"
+ImagingStudy ||--|| Patient : "patient_id"
+MolecularTest ||--|| Biopsy : "biopsy_id"
+Mutation ||--|| MolecularTest : "molecular_test_id"
+ResponseAssessment ||--|o ImagingStudy : "imaging_study_id"
+ResponseAssessment ||--|o MolecularTest : "molecular_test_id"
+ResponseAssessment ||--|o Treatment : "treatment_id"
+ResponseAssessment ||--|| Patient : "patient_id"
+Treatment ||--|| Patient : "patient_id"
+

@@ -1,0 +1,781 @@
+Var #,Bucket / Workflow Stage,Variable Name,Data Type,"Representative / Possible Values (Ranges, Constraints & Examples)",Relevant Data Standard(s),Confidence in Representative / Possible Values,Confidence this Variable is Collected in the EGFR NSCLC Diagnostic Pathway
+1,Bucket 1 - Clinical Context and Administration,Patient identifier (NHS number / MRN),String (coded - NHS number format: 10-digit; MRN format varies),"Format: NHS number = exactly 10 digits (e.g. 9434765919); MRN = institution-defined alphanumeric 6–20 chars.
+
+Constraints / Possible Values
+Format: 10-digit numeric string (NHS: e.g. 9434765919) | In public datasets: pseudonymised study IDs (e.g. TCGA-44-2655)",SNOMED CT | HL7 FHIR (structural) | OMOP CDM | NHS Data Dictionary,High,High
+,,,,,,,
+,,,,,,,
+,,,,,,,
+2,Bucket 1 - Clinical Context and Administration,Age at diagnosis,Integer (years) or Float (decimal age at diagnosis),"Type: Integer (years). Range: 0–130 (logical max); clinically expected 40–90 for NSCLC.
+
+Constraints / Possible Values
+Type: integer | Min: 0 | Max: 130 | Typical UK NSCLC range: 65–85 (median ~72; EGFR-mutant subset median ~60–65) | TLHC screening population: 55–74 | Unit: years
+",SNOMED CT | LOINC | ICD-10 | OMOP CDM | HL7 FHIR (structural) | NHS Data Dictionary,High,High
+,,,,,,,
+,,,,,,,
+,,,,,,,
+3,Bucket 1 - Clinical Context and Administration,Sex,Enum (coded),"Enum. Allowed values: Male | Female | Indeterminate | Not Known. NHS HES coded: 1=Male | 2=Female | 9=Indeterminate (unable to classify biologically) | X=Not known (not recorded).
+
+Constraints / Possible Values
+Male / Female / Indeterminate (unable to classify biologically) / Not Known | NHS coded integer: 1=Male / 2=Female / 9=Indeterminate / X=Not known",SNOMED CT | HL7 FHIR (structural) | OMOP CDM | NHS Data Dictionary | ICD-10,High,High
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+4,Bucket 1 - Clinical Context and Administration,Ethnicity / race,Coded (OMB categories - US; ONS 18-category - UK),"Enum (2-char alphanumeric). NHS first-char codes: A=White British, B=White Irish, C=Other White, D=White+Black Caribbean, H=Indian, J=Pakistani, K=Bangladeshi, L=Other Asian, M=Black Caribbean, N=Black African, Z=Not stated.
+
+Constraints / Possible Values
+Multi-value coded set. Each symptom = separate coded entry: cough, dyspnoea, chest pain, haemoptysis, weight loss, appetite loss / anorexia, fatigue, hoarseness, bone pain. Minimum 1 value for symptomatic presentations; NULL permitted for incidental/screening-detected asymptomatic cases.",SNOMED CT | OMOP CDM | HL7 FHIR (structural) | NHS Data Dictionary | ICD-10,High,High
+,,,,,,,
+,,,,,,,
+,,,,,,,
+5,Bucket 1 - Clinical Context and Administration,Presenting symptoms (coded),Coded (SNOMED CT) - multi-value,"Multi-value coded set. Each symptom = separate coded entry: cough, dyspnoea, chest pain, haemoptysis, weight loss, appetite loss / anorexia, fatigue, hoarseness, bone pain. Minimum 1 value for symptomatic presentations; NULL permitted for incidental/screening-detected asymptomatic cases.
+
+Constraints / Possible Values
+Cough | Dyspnoea | Chest pain | Haemoptysis | Weight loss | Appetite loss / anorexia | Fatigue | Hoarseness | Bone pain | Finger clubbing | Supraclavicular lymphadenopathy | Incidental finding (asymptomatic) | Other",SNOMED CT | ICD-10 | OMOP CDM | HL7 FHIR (structural),High,High
+,,,,,,,
+,,,,,,,
+,,,,,,,
+6,Bucket 1 - Clinical Context and Administration,Smoking status,Enum / Coded (SNOMED CT),"Enum. NHS SMOKING STATUS CODE: 1=Current smoker | 2=Ex-smoker | 3=Non-smoker - history unknown | 4=Never smoked | Z=Not stated (asked but declined) | 9=Unknown (not recorded). Mapped enum: Current_smoker (1) | Former_smoker (2) | Non_smoker_unknown_history (3) | Never_smoked (4) | Not_stated (Z) | Unknown (9)
+
+Constraints / Possible Values
+Lifelong Non-smoker / Current reformed smoker for >= 15 years / Current reformed smoker for < 15 years / Current smoker / Former smoker / Not reported | NHS SMOKING STATUS CODE: 1=Current smoker | 2=Ex-smoker | 3=Non-smoker - history unknown | 4=Never smoked | Z=Not stated | 9=Unknown",SNOMED CT | LOINC | OMOP CDM | HL7 FHIR (structural) | NHS Data Dictionary,High,High
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+7,Bucket 1 - Clinical Context and Administration,Pack-year history,Float (decimal pack-years; 1 pack-year = 20 cigarettes/day for 1 year),"Type: Float (decimal pack-years). Range: 0.0–200.0 (theoretical max). 1 pack-year = 20 cigarettes/day * 365 days. NULL/0 expected for never-smokers.
+
+Constraints / Possible Values
+Type: float | Min: 0 | Max: 120+ | Unit: pack-years (cigarettes/day * years smoked / 20)",SNOMED CT | LOINC | OMOP CDM | HL7 FHIR (structural),High,High
+,,,,,,,
+,,,,,,,
+,,,,,,,
+8,Bucket 1 - Clinical Context and Administration,Family history (cancer / lung cancer),"Boolean + Coded (relationship type, cancer type, age at diagnosis)","Compound: family_history_flag (Boolean: True/False/Unknown) + relationship (Enum: Father/Mother/Sibling/Child/Second-degree/Grandparent) + cancer_type (cancer site) + age_at_diagnosis_in_relative (Integer years, 0–100) + number_of_affected_relatives (Integer).
+
+Constraints / Possible Values
+Boolean (has_family_history): true/false | Relationship: mother/father/sibling/child/grandparent/second-degree relative | Cancer type: lung cancer / colorectal / breast / other | Age at diagnosis: integer (years)",SNOMED CT | ICD-10 | OMOP CDM | HL7 FHIR (structural),Medium,High
+,,,,,,,
+,,,,,,,
+,,,,,,,
+9,Bucket 1 - Clinical Context and Administration,ECOG performance status,"Integer (ordinal scale, 0–5)","Type: Integer. Allowed values ONLY: 0 | 1 | 2 | 3 | 4 | 5. 0=Fully active; 1=Restricted strenuous activity but ambulatory; 2=Ambulatory and capable of all self-care but unable to carry out any work activities; 3=Capable of only limited self-care, confined to bed or chair more than 50% of waking hours; 4=Completely disabled, cannot carry on any self-care and totally confined to bed or chair; 5=Dead.
+
+Constraints / Possible Values
+0 (Fully active) / 1 (Restricted but ambulatory) / 2 (Ambulatory, self-care only, up >50% waking hours) / 3 (Limited self-care, bed/chair >50% waking hours) / 4 (Completely disabled)",SNOMED CT | LOINC | OMOP CDM | HL7 FHIR (structural),High,High
+,,,,,,,
+,,,,,,,
+,,,,,,,
+10,Bucket 1 - Clinical Context and Administration,Risk stratification score,Float (probability 0.00–1.00) with algorithm identifier,"Type: Float (probability). Range: 0.00–1.00. Should include Algorithm_Identifier (Enum: PLCOm2012 | LLPv2 | LLPv3 | Brock | USPSTF2021 | Other)
+
+Constraints / Possible Values
+Type: float | Min: 0 | Max: 1.0 | Unit: probability ",SNOMED CT | LOINC | OMOP CDM | HL7 FHIR (structural),Low,Low
+,,,,,,,
+,,,,,,,
+,,,,,,,
+11,Bucket 1 - Clinical Context and Administration,Baseline full blood count / haematology results,Float (numeric results with units) - multi-component,"Multi-component Float panel. Normal reference ranges (adult): WBC: 3.6–11.0 *10?/L; RBC: 4.5–6.5 *10¹²/L (male) / 3.8–5.8 *10¹²/L (female); Haemoglobin: male 130–180 g/L; female 115–165 g/L; Haematocrit: male 0.40–0.54 L/L; female 0.37–0.47 L/L; MCV: 80–100 fL; MCH: 27–32 pg; Platelets: 140–400 *10?/L; Neutrophils: 1.8–7.5 *10?/L.
+
+Constraints / Possible Values
+WBC: 3.6–11.0 *10?/L | RBC: 3.8–5.8 (female) / 4.5–6.5 (male) *10¹²/L | Hb: 115–165 g/L (female) / 130–180 g/L (male) | Haematocrit: 0.37–0.47 L/L (female) / 0.40–0.54 L/L (male) | MCV: 80–100 fL | MCH: 27–32 pg | Plt: 140–400 *10?/L | Neutrophils: 1.8–7.5 *10?/L",LOINC | SNOMED CT | OMOP CDM | HL7 FHIR (structural),Medium,High
+,,,,,,,
+,,,,,,,
+,,,,,,,
+12,Bucket 1 - Clinical Context and Administration,Baseline renal function (eGFR),Float (mL/min/1.73m²),"Type: Float (mL/min/1.73m²). Range: 0.0–120.0.
+
+Constraints / Possible Values
+eGFR: G1 ?90 mL/min/1.73m² (normal/high) | G2 60–89 (mild) | G3a 45–59 | G3b 30–44 | G4 15–29 (severe) | G5 <15 (kidney failure) | Unit: mL/min/1.73m²",LOINC | SNOMED CT | OMOP CDM | HL7 FHIR (structural) | NHS Data Dictionary,High,High
+,,,,,,,
+,,,,,,,
+,,,,,,,
+13,Bucket 1 - Clinical Context and Administration,"Baseline ECG result (QTc interval, ms)",Float (ms) + Boolean (QTc prolongation flag),"Compound: QTc_ms (Float, ms) + QTc_prolongation_flag (Boolean) + correction_formula (Enum: Bazett | Fredericia | Fridericia | Other). QTc_ms range: 300–700 ms.
+
+Constraints / Possible Values
+QTc: 300–700 | Unit: ms",LOINC | SNOMED CT | OMOP CDM | HL7 FHIR (structural),High,High
+,,,,,,,
+,,,,,,,
+,,,,,,,
+14,Bucket 1 - Clinical Context and Administration,Baseline liver function tests (LFTs),Float - multi-component,"Multi-component Float panel. ALT: 0–40 IU/L; AST: 10–40 IU/L; Total Bilirubin: 5–21 µmol/L; GGT: 8–61 U/L; ALP: 30–130 IU/L for adults ?18 years; Total Protein: 64–83 g/L; Albumin: 35–50 g/L
+
+Constraints / Possible Values
+ALT: 0–40 IU/L | AST: 10–40 IU/L | ALP: 30–130 IU/L | Bilirubin: 5–21 µmol/L | Albumin: 35–50 g/L | GGT: 8–61 U/L | Total protein: 64–83 g/L",LOINC | SNOMED CT | OMOP CDM | HL7 FHIR (structural) | ISO 15189,High,High
+,,,,,,,
+,,,,,,,
+,,,,,,,
+15,Bucket 1 - Clinical Context and Administration,NICE NG12 / urgent suspected cancer referral pathway triggered,Boolean + Enum (pathway type),"Compound: referral_triggered (Boolean) + pathway_type (Enum: NG12_1.1.1 | NG12_1.1.2 | NG12_1.1.3); Note: uncertain if this documentation is routinely used, values refer to the corresponding NG NICE guidelines
+
+Constraints / Possible Values
+NG12_1.1.1 / NG12_1.1.2 / NG12_1.1.3",SNOMED CT | NHS Data Dictionary | OMOP CDM | HL7 FHIR (structural),Low,Low
+,,,,,,,
+,,,,,,,
+,,,,,,,
+16,Bucket 1 - Clinical Context and Administration,Imaging order - accession number,"String (alphanumeric, institution-defined format)","Type: String. Format: alphanumeric, institution-defined. Maximum 16 characters. Typically 8–16 chars in practice. DICOM tag (0008,0050).
+
+Constraints / Possible Values
+Format: Institution-defined alphanumeric string, maximum 16 characters (DICOM SH VR limit, DICOM PS3.5) | Examples: ACC202003010245, 2020-03-0098765, HSP-5432187",DICOM | HL7 FHIR (structural) | OMOP CDM,High,High
+,,,,,,,
+,,,,,,,
+,,,,,,,
+17,Bucket 1 - Clinical Context and Administration,Date of first clinical presentation / diagnosis date,Date (ISO 8601 format: YYYY-MM-DD),"Type: Date. Format: ISO 8601 YYYY-MM-DD. Range: 1900-01-01 to current date (no future dates). Must be ? date of biopsy AND ? date of first treatment.
+
+Constraints / Possible Values
+Format: ISO 8601 date (YYYY-MM-DD) or datetime (YYYY-MM-DDTHH:MM:SSZ) | Unit: UTC timestamp",SNOMED CT | LOINC | OMOP CDM | HL7 FHIR (structural) | NHS Data Dictionary,High,High
+,,,,,,,
+,,,,,,,
+,,,,,,,
+18,Bucket 2 - Imaging and Staging,Imaging modality,Enum (multi-value - multiple modalities may be used per episode),"Enum. Allowed values: CT | PT | MR | CR | DX | NM | US
+
+Constraints / Possible Values
+CT / MR / PT / NM / CR / DX / US | Format: 2-char uppercase DICOM modality code (DICOM tag 0008,0060)",DICOM | SNOMED CT | LOINC | OMOP CDM | HL7 FHIR (structural),High,High
+,,,,,,,
+,,,,,,,
+,,,,,,,
+19,Bucket 2 - Imaging and Staging,DICOM series UID / study UID,"String (DICOM UID format: up to 64 characters, dot-separated integers)","Type: String. DICOM UID format: dot-separated numeric string, max 64 chars (e.g. 1.3.6.1.4.1.14519.5.2.1.xxx). Study Instance UID (0020,000D) groups all series from one imaging examination; Series Instance UID (0020,000E) identifies individual acquisition series
+
+Constraints / Possible Values
+Format: dot-separated numeric string (OID-based, ISO/IEC 8824), max 64 characters | Study UID and Series UID are distinct identifiers",DICOM | HL7 FHIR (structural) | OMOP CDM,High,High
+,,,,,,,
+,,,,,,,
+,,,,,,,
+20,Bucket 2 - Imaging and Staging,Scan acquisition date,Date (ISO 8601: YYYY-MM-DD),"Type: Date+Time. DICOM native: YYYYMMDD; ISO 8601 export: YYYY-MM-DD (or YYYY-MM-DDTHH:MM:SS with UTC offset where time is available). DICOM native: Acquisition Date tag (0008,0022) in YYYYMMDD format; Study Date (0008,0020) used as fallback where acquisition date is absent.
+
+Constraints / Possible Values
+Format: ISO 8601 date (YYYY-MM-DD) or datetime with time and UTC offset (signed time difference between local time and UTC, written as ± HH:MM)",DICOM | SNOMED CT | HL7 FHIR (structural) | OMOP CDM,High,High
+,,,,,,,
+,,,,,,,
+,,,,,,,
+21,Bucket 2 - Imaging and Staging,"CT acquisition parameters (kVp, mAs, slice thickness)",Float / Integer - multi-component,"Multi-component: Kilovolt peak: (kVp - Integer) + tube current-time product (mAs) + Slice_thickness_mm (Float) + Pitch (Float).
+
+Constraints / Possible Values
+kVp: 80–140 kV (integer) | mAs: 10–500 mAs (float) | Slice thickness: 0.5–2.5 mm acquisition (float); ?1 mm preferred | Pitch: 0.8–1.5 (float)",DICOM | LOINC | HL7 FHIR (structural),Medium,Medium
+,,,,,,,
+,,,,,,,
+,,,,,,,
+22,Bucket 2 - Imaging and Staging,PET radiopharmaceutical injected dose (MBq) and uptake time (min),Float (MBq for dose; Integer for uptake time in minutes),"Injected_dose: Float (MBq). Uptake_time_min: Float (derived) = Acquisition_Time minus Injection_Time.
+
+Constraints / Possible Values
+Injected dose: 150–400 MBq | Uptake time: 60 ± 10 min | Delayed protocol: 90–120 min | Unit: MBq (dose), minutes (uptake)",DICOM | SNOMED CT | LOINC | HL7 FHIR (structural),High,Medium
+,,,,,,,
+,,,,,,,
+,,,,,,,
+23,Bucket 2 - Imaging and Staging,Clinical T-stage (TNM 8th edition),Enum (coded - TNM 8th edition),"Enum. Allowed values: TX | T0 | Tis | T1mi | T1a | T1b | T1c | T2a | T2b | T3 | T4
+
+Constraints / Possible Values
+TX / T0 / Tis / T1mi / T1a / T1b / T1c / T2a / T2b / T3 / T4",TNM 8th Edition | SNOMED CT | ICD-O-3 | OMOP CDM | HL7 FHIR (structural),High,Medium
+,,,,,,,
+,,,,,,,
+,,,,,,,
+24,Bucket 2 - Imaging and Staging,Clinical N-stage (TNM 8th edition),Enum (coded - TNM 8th edition),"Enum. Allowed values: NX | N0 | N1 | N2 | N3. NX = regional lymph nodes cannot be assessed; N0 = no regional lymph node metastasis; N1 = ipsilateral intrapulmonary, peribronchial, or hilar nodes; N2 = ipsilateral mediastinal and/or subcarinal nodes; N3 = metastasis in contralateral mediastinal or hilar lymph nodes, or ipsilateral or contralateral scalene or supraclavicular lymph nodes
+
+Constraints / Possible Values
+N0 (no nodes) / N1 (ipsilateral hilar/intrapulmonary) / N2 (ipsilateral mediastinal/subcarinal) / N3 (contralateral/hilar/ipsilateral/scalene/supraclavicular)",TNM 8th Edition | SNOMED CT | OMOP CDM | HL7 FHIR (structural),High,Medium
+,,,,,,,
+,,,,,,,
+,,,,,,,
+25,Bucket 2 - Imaging and Staging,Clinical M-stage and metastatic sites (TNM 8th edition),Enum + multi-value (coded - TNM 8th edition),"M-stage Enum: M0 | M1a (contralateral lung nodule; malignant pleural nodules; malignant pleural effusion; pericardial effusion/nodules) | M1b (single extrathoracic metastasis in one organ) | M1c (multiple extrathoracic metastases in one or more organs).
+
+Constraints / Possible Values
+M0 / M1a (intrathoracic: contralateral lung nodule, malignant pleural/pericardial effusion or nodules) / M1b (single extrathoracic) / M1c (multiple extrathoracic) | Common extrathoracic sites: brain / bone / adrenal / liver / kidney / soft tissue",TNM 8th Edition | SNOMED CT | ICD-10 | OMOP CDM | HL7 FHIR (structural),High,Medium
+,,,,,,,
+,,,,,,,
+,,,,,,,
+26,Bucket 2 - Imaging and Staging,Primary tumour diameter - RECIST 1.1 target lesion (mm),Float (mm),"Type: Float (mm). Range: 0.0–300 mm.
+
+Constraints / Possible Values
+Type: float | 0 | Max: 300 | Unit: mm",RECIST 1.1 | DICOM | LOINC | SNOMED CT | HL7 FHIR (structural),High,Medium
+,,,,,,,
+,,,,,,,
+,,,,,,,
+27,Bucket 2 - Imaging and Staging,"SUV max (standardised uptake value, maximum - PET-CT)","Float (standardised uptake value - dimensionless, body-weight normalised)","Type: Float (dimensionless, body-weight normalised). Clinical range: 0.0–40+
+
+Constraints / Possible Values
+Type: float | Min: 0 | Max: 40+ (no hard ceiling) | Unit: dimensionless",SNOMED CT | LOINC | DICOM | OMOP CDM | HL7 FHIR (structural),Medium,Low
+,,,,,,,
+,,,,,,,
+,,,,,,,
+28,Bucket 2 - Imaging and Staging,Brain imaging findings (MRI / CT),Structured (Boolean + Integer + Float - multi-component),"Compound: metastasis_present (Boolean) + number_of_lesions (Integer ?0) + largest_lesion_mm (Float, 1–60 mm) + lesion_location (SNOMED CT brain anatomy codes) + lesion_edema_present (Boolean).
+
+Constraints / Possible Values
+metastasis_present: true/false | Lesion count: 0–20+ | Largest lesion: 1–60 mm | Locations: frontal / parietal / temporal / occipital / cerebellar / brainstem | lesion_edema_present: true/false | Likely given in a report format",SNOMED CT | ICD-10 | DICOM | OMOP CDM | HL7 FHIR (structural),High,High
+,,,,,,,
+,,,,,,,
+,,,,,,,
+29,Bucket 2 - Imaging and Staging,Biopsy target anatomical location (SNOMED CT coded),Coded (SNOMED CT anatomical location code),"Type: SNOMED CT coded anatomical concept. Common sites: lung, mediastinal lymph node, left lower lobe, thoracic lymph node, adrenal gland, liver, brain, pleura.
+
+Constraints / Possible Values
+Lung / Mediastinal lymph node / Specific lobe / Adrenal gland / Liver / Brain / Pleura / Lymph node | Laterality: left / right / bilateral",SNOMED CT | ICD-O-3 | OMOP CDM | HL7 FHIR (structural),Medium,High
+,,,,,,,
+,,,,,,,
+,,,,,,,
+30,Bucket 2 - Imaging and Staging,Overall AJCC clinical stage (Stage I–IV),Enum (AJCC 8th edition),"Enum. Allowed values: Stage 0 | IA1 | IA2 | IA3 | IB | IIA | IIB | IIIA | IIIB | IIIC | IVA | IVB. Stage 0 = Tis (adenocarcinoma in situ or squamous cell carcinoma in situ), N0, M0. Must be logically consistent with T, N, M sub-stages
+Constraints / Possible Values
+Stage 0 / IA1 / IA2 / IA3 / IB / IIA / IIB / IIIA / IIIB / IIIC / IVA / IVB",TNM 8th Edition | SNOMED CT | ICD-O-3 | OncoTree | OMOP CDM | HL7 FHIR (structural),Medium,Medium
+,,,,,,,
+,,,,,,,
+,,,,,,,
+31,Bucket 2 - Imaging and Staging,Radiologist report - DICOM SR / structured report,Structured text (DICOM SR) or free-text (HL7 ORU),"Type: Structured text (DICOM SR SOP Class) or free text (HL7 ORU R01). Sections of report may include: Indication, Technique (including modality and acquisition parameters), Findings, Impression/Conclusion, Recommendation/Management, Staging Assessment. DICOM SR Templates: TID 2000 (Basic Diagnostic Imaging Report), TID 1500 (Measurement Report for quantitative data including lesion measurements and SUVmax).
+
+Constraints / Possible Values
+DICOM Structured Report (SR) or HL7 ORU free-text message. Standard sections: Indication / Technique / Findings / Impression / Recommendation / Staging Assessment",DICOM | HL7 FHIR (structural) | SNOMED CT | LOINC,Medium,Medium
+,,,,,,,
+,,,,,,,
+,,,,,,,
+32,Bucket 3 - Tissue Biopsy: Pre-Analytical and Pathology,Biopsy procedure technique,Enum,"Enum: Bronchoscopy_BAL | Bronchoscopy_endobronchial | Bronchoscopy_brushings | Bronchoscopy_washings | EBUS-TBNA | EBUS_cryobiopsy | EUS-FNA | CT-guided_core_needle | CT-guided_FNA | VATS_wedge | VATS_lobectomy | Surgical_lobectomy | Surgical_pneumonectomy | Ultrasound-guided_biopsy | TBLC_cryobiopsy | ENB_guided_biopsy | Pleural_biopsy_image_guided | Other
+
+Constraints / Possible Values
+EBUS-TBNA / CT-guided percutaneous needle biopsy (TTNB) / Bronchoscopy with forceps biopsy / Endobronchial biopsy / EUS-guided biopsy / VATS / Surgical open biopsy / TBLC / ENB-guided / Pleural biopsy / Other | Source: BTS Guidelines for Diagnostic Flexible Bronchoscopy",SNOMED CT | HL7 FHIR (structural) | OMOP CDM,Medium,High
+,,,,,,,
+,,,,,,,
+,,,,,,,
+33,Bucket 3 - Tissue Biopsy: Pre-Analytical and Pathology,Number of passes / cores obtained,Integer,"Type: Integer. Range: 1–12 (practical estimate; may vary between different biopsy techniques)
+
+Constraints / Possible Values
+Type: integer | Min: 1 | Max: 12 (estimate) |Unit: count",LOINC | HL7 FHIR (structural) | OMOP CDM,Medium,Low
+,,,,,,,
+,,,,,,,
+,,,,,,,
+34,Bucket 3 - Tissue Biopsy: Pre-Analytical and Pathology,ROSE result (Rapid On-Site Evaluation),Enum,"Enum: Adequate | Borderline_adequate | Inadequate | Not_performed
+
+Constraints / Possible Values
+Adequate / Borderline_adequate / Inadequate / Not performed",SNOMED CT | HL7 FHIR (structural) | OMOP CDM,High,Medium
+,,,,,,,
+,,,,,,,
+,,,,,,,
+35,Bucket 3 - Tissue Biopsy: Pre-Analytical and Pathology,Specimen category,Enum,"Enum: Histology_core_needle | Cytology_FNA | Cell_block | Cytology_direct_smear | Cytology_liquid_based_preparation | Cytology_touch_prep | Pleural_fluid_cytology | Bronchial_wash_cytology | Surgical_resection.
+
+Constraints / Possible Values
+Histology_core_needle / Cytology_FNA / Cell_block / Cytology_direct_smear / Cytology_liquid_based_preparation / Cytology_touch_prep / Pleural_fluid_cytology / Bronchial_wash_cytology / Surgical_resection ",SNOMED CT | HL7 FHIR (structural) | OMOP CDM | SPREC,Low,High
+,,,,,,,
+,,,,,,,
+,,,,,,,
+36,Bucket 3 - Tissue Biopsy: Pre-Analytical and Pathology,Preparation format,Enum,"Enum: FFPE_block | Fresh_frozen_OCT | Fresh_unfixed | Alcohol_fixed_cytology | Liquid_based_cytology_ThinPrep | Liquid_based_cytology_SurePath | Cytology_direct_smear | Cytology_cell_block | Touch_preparation | Decalcified_FFPE
+Constraints / Possible Values
+FFPE / Fresh (unfixed) / Fresh-frozen / Alcohol-fixed / Liquid-based cytology (ThinPrep/SurePath) / Air-dried smear / Cytospin / Cell block / Touch prep / OCT-embedded / Decalcified FFPE / Other",SPREC | SNOMED CT | HL7 FHIR (structural) | ISO 15189 / CLSI,Medium,High
+,,,,,,,
+,,,,,,,
+,,,,,,,
+37,Bucket 3 - Tissue Biopsy: Pre-Analytical and Pathology,Fixation duration (hours in fixative),Float (hours),"Type: Float (hours). Acceptable range: 6.0–72.0. FoundationOne CDx requires 6–72h NBF; under-fixation or non-standard fixatives trigger rejection.
+
+Constraints / Possible Values
+Type: float | Min: 1.0 | Max: 72.0 | Optimal for NGS: 6–48 hours | Acceptable: 6–72 hours | Recommended: 24 hours | Unit: hours",SPREC | ISO 15189 / CLSI | HL7 FHIR (structural) | OMOP CDM,High,Medium
+,,,,,,,
+,,,,,,,
+,,,,,,,
+38,Bucket 3 - Tissue Biopsy: Pre-Analytical and Pathology,Decalcification method,Enum,"Enum: None | EDTA_based_non-acid | Formic_acid_based | HCl_based_strong_acid | Other_acid_based.
+
+Constraints / Possible Values
+None / EDTA_based_non-acid / Formic_acid_based / HCl_based_strong_acid / Other_acid_based / Electrolytic | Note: Strong acid decalcification destroys DNA and precludes molecular testing. Rarely required for primary NSCLC biopsies but applies to bone metastasis specimens.",SPREC | SNOMED CT | HL7 FHIR (structural),Medium,Low
+,,,,,,,
+,,,,,,,
+,,,,,,,
+39,Bucket 3 - Tissue Biopsy: Pre-Analytical and Pathology,Tumour cellularity (% tumour nuclei),Integer / Float (percentage),"Type: Float (%). Range: 0.0–100.0. Minimum for NGS: ?20%; optimal: ?30%; Sanger sequencing: ?50%; sensitive PCR/ddPCR: ?5%
+
+Constraints / Possible Values
+Type: integer (or float) | Min: 0 | Max: 100 | NGS-eligible minimum: ?20% | Optimal for NGS: ?30% | Sanger sequencing minimum: ?50% | Sensitive PCR minimum: ?5% | Enrichment zone: 10–20% | Typical NSCLC FFPE biopsy: 40–90% | Clinical threshold: <20% triggers enrichment or reflex liquid biopsy | Unit: % tumour nuclei",LOINC | SNOMED CT | HL7 FHIR (structural) | OMOP CDM,Medium,High
+,,,,,,,
+,,,,,,,
+,,,,,,,
+40,Bucket 3 - Tissue Biopsy: Pre-Analytical and Pathology,Tumour enrichment performed (boolean),Boolean + Enum (method),"Type: Boolean: True | False. If True, must record post-enrichment cellularity estimate.
+
+Constraints / Possible Values
+[Sub-field 1] enrichment_performed: Boolean - True / False | [Sub-field 2] enrichment_method (if True): Macrodissection / Laser_capture_microdissection (LCM) / Scraping / Manual_dissection / FACS / Other | [Sub-field 3] post_enrichment_cellularity: Float % (mandatory if enrichment_performed = True) | [Sub-field 4] enrichment_trigger (optional): cellularity_below_threshold / complex_morphology / request_by_molecular_lab",SNOMED CT | HL7 FHIR (structural) | OMOP CDM | ISO 15189 / CLSI,High,Medium
+,,,,,,,
+,,,,,,,
+,,,,,,,
+41,Bucket 3 - Tissue Biopsy: Pre-Analytical and Pathology,Tumour subtype (WHO 2021 / ICD-O-3 coded),Coded (WHO Classification + ICD-O-3),"Coded: (WHO 2021/ICD-O-3.2). Adenocarcinoma: 8140/3 (NOS), 8250/3 (lepidic), 8551/3 (acinar), 8260/3 (papillary), 8265/3 (micropapillary), 8230/3 (solid), 8253/3 (invasive mucinous), 8254/3 (mixed mucinous/non-mucinous), 8256/3 (MIA non-mucinous), 8257/3 (MIA mucinous), 8250/2 (adenocarcinoma in situ). Squamous cell carcinoma: 8070/3 (NOS), 8071/3 (keratinising), 8072/3 (non-keratinising), 8083/3 (basaloid). SCLC: 8041/3. LCNEC: 8013/3. Large cell carcinoma: 8012/3. Adenosquamous carcinoma: 8560/3. NSCLC-NOS: 8046/3
+
+Constraints / Possible Values
+Adenocarcinoma NOS (8140/3) / Lepidic adenocarcinoma (8250/3) / Acinar adenocarcinoma (8551/3) / Papillary adenocarcinoma (8260/3) / Micropapillary adenocarcinoma (8265/3) / Solid adenocarcinoma (8230/3) / Invasive mucinous adenocarcinoma (8253/3) / MIA non-mucinous (8256/3) / MIA mucinous (8257/3) / Squamous cell carcinoma NOS (8070/3) / SCC keratinising (8071/3) / SCC non-keratinising (8072/3) / Large cell carcinoma (8012/3) / LCNEC (8013/3) / Small cell lung cancer (8041/3) / Adenosquamous carcinoma (8560/3) / Carcinoid tumour (8240/3) / NSCLC-NOS (8046/3) / Other",ICD-10 / ICD-O-3 | SNOMED CT | HL7 FHIR (structural) | OMOP CDM,High,Medium
+,,,,,,,
+,,,,,,,
+,,,,,,,
+42,Bucket 3 - Tissue Biopsy: Pre-Analytical and Pathology,Diagnosis specificity (definitive subtype / NOS),Enum,"Enum: Definitive_subtype | Pending_IHC_subtyping | NOS
+
+Constraints / Possible Values
+Definitive subtype confirmed / Pending_IHC_subtyping (IHC ordered; awaiting result) / Not otherwise specified (NOS) - insufficient material / Subtype confirmed on reflex testing",SNOMED CT | LOINC | HL7 FHIR (structural) | OMOP CDM,High,High
+,,,,,,,
+,,,,,,,
+,,,,,,,
+43,Bucket 3 - Tissue Biopsy: Pre-Analytical and Pathology,Necrosis (% of specimen showing necrosis),Integer / Float (percentage),"Type: Float (%). Range: 0.0–100.0.
+
+Constraints / Possible Values
+Type: integer (or float) | Min: 0 | Max: 100",LOINC | SNOMED CT | HL7 FHIR (structural) | OMOP CDM,Medium,Medium
+,,,,,,,
+,,,,,,,
+,,,,,,,
+44,Bucket 3 - Tissue Biopsy: Pre-Analytical and Pathology,IHC antibody clone and staining platform,Enum (antibody clone) + String (staining platform),"Compound: antibody_clone (String) + staining_platform (Enum).
+
+Constraints / Possible Values
+[Sub-field 1] antibody_clone (Enum): SP142 / 22C3 / 28-8 / SP263 / E1L3N / 5H7 / SP156 / Other | [Sub-field 2] staining_platform (String): Dako_Omnis / Dako_Autostainer_Link48 / Ventana_BenchMark_ULTRA / Leica_BOND_RX / Other",SNOMED CT | LOINC | HL7 FHIR (structural) | OMOP CDM,Medium,Medium
+,,,,,,,
+,,,,,,,
+,,,,,,,
+45,Bucket 3 - Tissue Biopsy: Pre-Analytical and Pathology,"PD-L1 TPS (tumour proportion score, %)",Integer (percentage 0–100),"Type: Float (%). Range: 0–100. TPS = (PD-L1+ tumour cells ÷ total viable tumour cells) * 100.
+
+Constraints / Possible Values
+Type: integer | Min: 0 | Max: 100 | Unit: % of viable tumour cells",LOINC | SNOMED CT | HL7 FHIR (structural) | OMOP CDM,High,High
+,,,,,,,
+,,,,,,,
+,,,,,,,
+46,Bucket 3 - Tissue Biopsy: Pre-Analytical and Pathology,Tissue NGS panel name and version,String (controlled vocabulary),"Type: String (panel name + version)
+
+Constraints / Possible Values
+FoundationOne CDx (v1) / MSK-IMPACT (v341/v410/v468) / Oncomine Dx Target Test / Illumina TruSight Oncology 500 (TSO500) / NHS Genomic Test Directory M4.13 (combined DNA+RNA) / NHS Genomic Test Directory M4.1 or M4.2 (targeted) see: https://www.england.nhs.uk/publication/national-genomic-test-directories/
+",LOINC | HL7 FHIR (structural) | OMOP CDM,Medium,High
+,,,,,,,
+,,,,,,,
+,,,,,,,
+47,Bucket 3 - Tissue Biopsy: Pre-Analytical and Pathology,NGS assay type (DNA / RNA / concurrent DNA+RNA),Enum,"Enum: DNA_only | RNA_only | Concurrent_DNA_and_RNA.
+
+Constraints / Possible Values
+DNA only / RNA only / Concurrent DNA+RNA / WES (whole exome sequencing) / WGS (whole genome sequencing) / Targeted amplicon / Targeted hybridisation-capture",SNOMED CT | LOINC | HL7 FHIR (structural) | OMOP CDM,High,High
+,,,,,,,
+,,,,,,,
+,,,,,,,
+48,Bucket 3 - Tissue Biopsy: Pre-Analytical and Pathology,DNA input mass - tissue NGS (ng),Float (nanograms),"Type: Float (ng). Range: 10–1,000 ng (practical clinical range).
+
+Constraints / Possible Values
+Type: float | Min: 10.0 | Max: 1000.0 (estimate)",LOINC | HL7 FHIR (structural) | OMOP CDM | ISO 15189 / CLSI,Medium,Medium
+,,,,,,,
+,,,,,,,
+,,,,,,,
+49,Bucket 3 - Tissue Biopsy: Pre-Analytical and Pathology,Mean on-target coverage depth - tissue NGS,Float (fold coverage),"Type: Float.
+Constraints / Possible Values
+Type: float | Min: 50 | Max: 5000+ | Typical tissue NGS: 200–1,000* | Minimum for clinical tissue reporting: 250* (ASCO/CAP); recommended 500* | Unit: * (fold coverage)",LOINC | HL7 FHIR (structural) | OMOP CDM | ISO 15189 / CLSI,Medium,Medium
+,,,,,,,
+,,,,,,,
+,,,,,,,
+50,Bucket 3 - Tissue Biopsy: Pre-Analytical and Pathology,EGFR mutation detected - tissue (HGVS notation),String (HGVS notation) + Enum (mutation subtype),"Type: String (HGVS notation). Format: NM_{accession}.{version}:c.{coding_DNA_change} and p.{protein_change}. Key HGVS examples (NM_005228.5): Exon 19 deletion (most common): NM_005228.5:c.2235_2249del p.(Glu746_Ala750del); Exon 21 L858R: NM_005228.5:c.2573T>G p.(Leu858Arg); T790M resistance: NM_005228.5:c.2369C>T p.(Thr790Met); L861Q (exon 21): NM_005228.5:c.2582T>A p.(Leu861Gln); G719S (exon 18): NM_005228.5:c.2155G>A p.(Gly719Ser) - multiple G719X substitutions exist; S768I (exon 20): NM_005228.5:c.2303T>A p.(Ser768Ile); Exon 20 insertions: variable HGVS - refer to ClinVar/COSMIC catalogue | 'Not_detected' | 'Non-informative_result'
+
+Constraints / Possible Values
+HGVS-formatted string per variant detected | Common sensitising mutations: L858R, Exon 19 del, G719X, L861Q, S768I | Common resistance mutations: T790M, C797S, Exon 20 insertions",HGVS | COSMIC | ClinVar | SNOMED CT | LOINC | HL7 FHIR (structural) | OMOP CDM,Low,High
+,,,,,,,
+,,,,,,,
+,,,,,,,
+51,Bucket 3 - Tissue Biopsy: Pre-Analytical and Pathology,VAF - tissue NGS (%),"Float (percentage, 0.00–100.00)","Type: Float (%). Range: 0.00–100.00.
+
+Constraints / Possible Values
+Type: float | Min: 0.01 | Max: 100.00",LOINC | HGVS | HL7 FHIR (structural) | OMOP CDM,High,High
+,,,,,,,
+,,,,,,,
+,,,,,,,
+52,Bucket 3 - Tissue Biopsy: Pre-Analytical and Pathology,Tissue sufficiency status,Enum,"Enum: Adequate | Insufficient | Failed_QC | Unavailable | Pending
+
+Constraints / Possible Values
+Adequate / Insufficient (partial panel) / Failed_QC (pre-analytical or analytical quality failure) / Unavailable (no biopsy possible) / Pending",SNOMED CT | LOINC | HL7 FHIR (structural) | OMOP CDM,Medium,High
+,,,,,,,
+,,,,,,,
+,,,,,,,
+53,Bucket 4 - Liquid Biopsy: Pre-Analytical,Clinical indication for ctDNA test,Enum,"Enum (estimated): Initial_EGFR_detection_tissue_unavailable | Initial_EGFR_detection_concurrent | MRD_monitoring_post-surgery | Treatment_response_monitoring | Resistance_detection_at_progression | CSF_ctDNA_CNS_progression | Clinical_trial_enrolment_biomarker |ECOG_Score (not fit for tissue biopsy) 
+
+Constraints / Possible Values
+Initial diagnosis confirmation / Treatment response monitoring / Resistance mechanism detection / Recurrence surveillance / Minimal residual disease (MRD)/ Clinical trial enrolment biomarker / ECOG Score (poor fitness)",BLOODPAC MTDE v1.0 | SNOMED CT | LOINC | HL7 FHIR (structural) | OMOP CDM,Low,Medium
+,,,,,,,
+,,,,,,,
+,,,,,,,
+54,Bucket 4 - Liquid Biopsy: Pre-Analytical,Tube type (BLOODPAC MTDE #1),Enum,"Enum: K2EDTA | K3EDTA | Streck_Cell-Free_DNA_BCT | PAXgene_Blood_ccfDNA | CellSave | Roche_Cell-Free_DNA_BCT | Other
+
+Constraints / Possible Values
+EDTA (K2EDTA) / EDTA (K3EDTA) / Streck BCT Cell-Free DNA BCT (contains K3EDTA + formaldehyde-free preservative) / Roche Cell-Free DNA BCT / CellSave Preservative Tube / PAXgene Blood ccfDNA Tube / Heparin (not recommended for cfDNA) / Other",BLOODPAC MTDE v1.0 | SPREC | SNOMED CT | HL7 FHIR (structural) | OMOP CDM,High,Medium
+,,,,,,,
+,,,,,,,
+,,,,,,,
+55,Bucket 4 - Liquid Biopsy: Pre-Analytical,Tube additive (BLOODPAC MTDE #2),Enum (controlled vocabulary),"Type: String (controlled vocabulary). Enum: EDTA_K2EDTA | EDTA_K3EDTA | Streck_proprietary_preservative_formaldehyde-free (+ K3EDTA anticoagulant) | Formaldehyde_based_cell_stabiliser (CellSave only) | Proprietary_formaldehyde-free_stabiliser (Streck BCT - formaldehyde-FREE per manufacturer IFU) | Citrate | None (serum separator).
+
+Constraints / Possible Values
+K2EDTA / K3EDTA / Streck_proprietary_preservative_formaldehyde-free (+ K3EDTA) / Formaldehyde_based_cell_stabiliser (CellSave) / Citrate / None (serum separator)",SPREC | BLOODPAC MTDE #1 sub-element (tube additive is part of Blood_tube_type; BLOODPAC MTDE #2 is Sample Composition) | SNOMED CT | HL7 FHIR (structural) | OMOP CDM,Medium,Medium
+,,,,,,,
+,,,,,,,
+,,,,,,,
+56,Bucket 4 - Liquid Biopsy: Pre-Analytical,Collection volume (mL),Float (mL),"Type: Float (mL). Range: 5.0–30.0 mL (routine). Standard ctDNA: 10.0 mL (one Streck BCT or K2EDTA tube). MRD/ultra-sensitive applications: 20.0 mL (two tubes). Minimum for meaningful cfDNA testing: 8.0 mL. Exceptional cases (1.0–5.0 mL, e.g., paediatric)
+
+Constraints / Possible Values
+Type: Float | Min: 5.0 | Max: 30.0 | Typical range: 10–20 mL | Unit: mL",BLOODPAC MTDE v1.0 | SPREC | LOINC | HL7 FHIR (structural) | OMOP CDM,High,Medium
+,,,,,,,
+,,,,,,,
+,,,,,,,
+57,Bucket 4 - Liquid Biopsy: Pre-Analytical,Time of blood draw (timestamp),DateTime (ISO 8601: YYYY-MM-DDTHH:MM:SS),"Type: DateTime. Format: ISO 8601 YYYY-MM-DDTHH:MM:SS±HH:MM. Should be recorded to nearest minute. Example (UK): 2026-03-15T09:42:00+00:00 (GMT) or 2026-06-15T09:42:00+01:00 (BST).
+
+Constraints / Possible Values
+Format: ISO 8601 datetime | Precision: Date + HH:MM:SS + timezone offset | Example (UK): 2026-03-15T09:42:00+00:00 (GMT) or 2026-06-15T09:42:00+01:00 (BST)",BLOODPAC MTDE v1.0 | HL7 FHIR (structural) | ISO 8601 | OMOP CDM,High,Medium
+,,,,,,,
+,,,,,,,
+,,,,,,,
+58,Bucket 4 - Liquid Biopsy: Pre-Analytical,Transport temperature (°C) (BLOODPAC MTDE #5),Float (°C) + Enum (temperature range),"Type: Float (°C). K2/K3EDTA whole blood: Ambient (15–25°C) if processing within 2–4 h; refrigerated (4°C) acceptable for extended transit up to 24 h. Streck BCT (IVD): Ambient 18–25°C only
+
+Constraints / Possible Values
+Ambient (15–30°C) / Refrigerated_2-8C (EDTA extended transit only) / Other | Type: Float °C | Min: ?20°C (only if plasma already separated and frozen for transport, NOT for whole blood) | Max: 37°C",BLOODPAC MTDE v1.0 (MTDE #3: Shipping_temperature) | SPREC | SNOMED CT | HL7 FHIR (structural) | OMOP CDM,Medium,Medium
+,,,,,,,
+,,,,,,,
+,,,,,,,
+59,Bucket 4 - Liquid Biopsy: Pre-Analytical,Time from collection to fractionation (hours) (BLOODPAC MTDE #6),Float (hours),"Type: Float (hours). K2/K3EDTA at RT: ?2 h, ?4 h; K2/K3EDTA at 4°C: ?24 h. Streck BCT (IVD) at 18–25°C: ?168 h
+
+Constraints / Possible Values
+Type: Float | Min: 0 | Max: 336 | K2/K3EDTA: ?2 h critical; ?4 h acceptable at RT; ?24 h at 4°C | Streck BCT: ?168 h (7 days) at 18–25°C | Unit: hours",BLOODPAC MTDE v1.0 (MTDE #5: Time_to_fractionation) | SPREC | LOINC | HL7 FHIR (structural) | OMOP CDM,High,Medium
+,,,,,,,
+,,,,,,,
+,,,,,,,
+60,Bucket 4 - Liquid Biopsy: Pre-Analytical,Sample composition (BLOODPAC MTDE #4),Enum,"Enum: Plasma | Serum | Whole_blood | Buffy_coat | Urine | CSF | Other. For ctDNA: Plasma preferred. Urine and CSF require separate pre-analytical protocols not covered in our diagnostic workflow.
+
+Constraints / Possible Values
+Whole blood / Plasma / Serum / Buffy coat / Urine / CSF / Other",BLOODPAC MTDE v1.0 (MTDE #2: Composition) | SPREC | SNOMED CT | HL7 FHIR (structural) | OMOP CDM,High,Medium
+,,,,,,,
+,,,,,,,
+,,,,,,,
+61,Bucket 4 - Liquid Biopsy: Pre-Analytical,Centrifugation protocol (speeds *g and durations),Float (*g) + Integer (minutes) - multi-component,"Compound: spin1_speed_g (Float) + spin1_duration_min (Integer) + spin1_temp_C (Float) + spin2_speed_g (Float) + spin2_duration_min (Integer) + spin2_temp_C (Float) - Note: There are tube-specific protcols.
+
+Constraints / Possible Values
+Type: Compound (Float *g + Integer minutes; tube-type specific protocol) | Spin 1 (EDTA): 800–1,600*g * 10–20 min at RT or 4°C | Spin 1 (Streck BCT tube): 1,600*g * 10 min at RT - MAXIMUM 3,000*g (tube breakage risk above this limit) | Spin 2 (plasma, all tube types): 14,000–16,000*g * 10 min at RT or 4°C",BLOODPAC MTDE v1.0 | SPREC | HL7 FHIR (structural) | OMOP CDM,Medium,Medium
+,,,,,,,
+,,,,,,,
+,,,,,,,
+62,Bucket 4 - Liquid Biopsy: Pre-Analytical,Plasma volume recovered (mL),Float (mL),"Type: Float (mL). Expected: ~4–5 mL plasma from 10 mL blood.
+
+Constraints / Possible Values
+Type: Float | Min: 0.5 | Max: 15 | Typical range: 2–8 mL | Unit: mL",BLOODPAC MTDE v1.0 | LOINC | HL7 FHIR (structural) | OMOP CDM,High,Medium
+,,,,,,,
+,,,,,,,
+,,,,,,,
+63,Bucket 4 - Liquid Biopsy: Pre-Analytical,Time from fractionation to freezing (BLOODPAC MTDE #7),Float (hours),"Type: Float (hours). Optimal: ?60 min at RT. Critical threshold: ?2 h at RT (BLOODPAC).
+
+Constraints / Possible Values
+Type: Float | Min: 0 | Max: 24 | Optimal: ?1 h at RT | Critical threshold: ?2 h at RT |Unit: hours",BLOODPAC MTDE v1.0 | SPREC | LOINC | HL7 FHIR (structural) | OMOP CDM,High,Medium
+,,,,,,,
+,,,,,,,
+,,,,,,,
+64,Bucket 4 - Liquid Biopsy: Pre-Analytical,Plasma storage temperature (°C) (BLOODPAC MTDE #8),Float (°C) + Enum (storage category),"Type: Float (°C).
+
+Constraints / Possible Values
+?80°C (long-term) / ?20°C (?3 months acceptable) / 4°C (same-day only) / Other | Type: Float °C",BLOODPAC MTDE v1.0 | SPREC | SNOMED CT | HL7 FHIR (structural) | OMOP CDM,High,Medium
+,,,,,,,
+,,,,,,,
+,,,,,,,
+65,Bucket 4 - Liquid Biopsy: Pre-Analytical,Freeze-thaw cycles (count),Integer,"Type: Integer. 0 = never frozen. 1 = 1 F/T cycle
+
+Constraints / Possible Values
+Type: Integer | Min: 0 | Max: 2 (estimated - in practice should just have 1 F/T cycle) |Unit: cycles",BLOODPAC MTDE v1.0 | ISBER Best Practices | HL7 FHIR (structural) | OMOP CDM,High,Medium
+,,,,,,,
+,,,,,,,
+,,,,,,,
+66,Bucket 5 - Molecular Analysis: Analytical and Post-Analytical,Extraction kit name and lot number (BLOODPAC MTDE #9),String (kit name) + String (lot number),"Compound: kit_name (String) + lot_number (String). Kit list: QIAamp_Circulating_Nucleic_Acid_Kit | MagMAX_Cell-Free_DNA_Isolation_Kit | Roche_Cell_Free_DNA_Serum_Plasma_Kit | Norgen_Plasma_cfDNA_Purification_Kit | Apostle_MiniMax_High_Efficiency_cfDNA_Isolation_Kit | Monarch_Mag_cfDNA_Kit | Other | Lot number = manufacturer batch ID
+
+Constraints / Possible Values
+Kit name: QIAamp_Circulating_Nucleic_Acid_Kit / MagMAX_Cell-Free_DNA_Isolation_Kit / Roche_Cell_Free_DNA_Serum_Plasma_Kit / Norgen_Plasma_cfDNA_Purification_Kit / Apostle_MiniMax_cfDNA_Isolation_Kit / Monarch_Mag_cfDNA_Kit / Other | Format: String (kit name) + String (lot number)",BLOODPAC MTDE v1.0 (MTDE #6 — analyte_isolation_method; MTDE #9 is molecular_concentration) | ISO 15189 | HL7 FHIR (structural) | OMOP CDM,Low,Low
+,,,,,,,
+,,,,,,,
+,,,,,,,
+67,Bucket 5 - Molecular Analysis: Analytical and Post-Analytical,cfDNA concentration (ng/?L) (BLOODPAC MTDE #10),Float (ng/?L),"Type: Float (ng/µL). Range: 0.01–50 ng/µL.
+
+Constraints / Possible Values
+Type: Float | Min: 0.1 | Max: 50 (estimated) | Typical range: 0.8–22.5 ng/µL | Unit: ng/µL",BLOODPAC MTDE v1.0 (MTDE #9 — molecular_concentration in preanalytical MTDE table) | LOINC | HL7 FHIR (structural) | OMOP CDM | ISO 15189,High,Medium
+,,,,,,,
+,,,,,,,
+,,,,,,,
+68,Bucket 5 - Molecular Analysis: Analytical and Post-Analytical,cfDNA total yield (ng),Float (nanograms),"Type: Float (ng). Derived: concentration (ng/µL) * elution volume (µL). Estimated Range: 0.5–500 ng. 
+
+Constraints / Possible Values
+Type: Float | Min: 4 | Max: 500 | Typical range: 5–140 ng | Unit: ng ",BLOODPAC MTDE v1.0 | LOINC | HL7 FHIR (structural) | OMOP CDM,High,Medium
+,,,,,,,
+,,,,,,,
+,,,,,,,
+69,Bucket 5 - Molecular Analysis: Analytical and Post-Analytical,Fragment size distribution peak (bp) (BLOODPAC MTDE #11),Integer (bp) + descriptive,"Type: Float (bp). Expected mononucleosomal peak: 166–167 bp (modal).
+
+Constraints / Possible Values (estimated)
+Type: Float | Min: 100 | Max: 250 | Typical healthy peak: 166–167 bp (modal mononucleosomal) | Unit: bp",BLOODPAC MTDE v1.0 | LOINC | HL7 FHIR (structural) | OMOP CDM,Low,Low
+,,,,,,,
+,,,,,,,
+,,,,,,,
+70,Bucket 5 - Molecular Analysis: Analytical and Post-Analytical,Library preparation kit name and version,String,"Compound: kit_name (String) + version (String). Controlled list: KAPA_HyperPrep_Kit | NEBNext_Ultra_II_FS_DNA | xGen_2S_DNA_Library_Prep_Kit | AVENIO_ctDNA_Analysis_Kit_V2 | Twist_cfDNA_Library_Prep_Kit | Collibri_PS_DNA_Library_Prep_Kit (Thermo Fisher) | KAPA_HyperPlus | Other.
+
+Constraints / Possible Values
+KAPA HyperPrep Kit (Roche) / NEBNext Ultra II FS DNA Library Prep (NEB) / xGen 2S DNA Library Prep Kit (IDT, formerly Accel-NGS 2S Plus) / AVENIO ctDNA Analysis Kit V2 (Roche) / Twist cfDNA Library Prep Kit / Other | Format: String kit name + String version",BLOODPAC MTDE v1.0 | ISO 15189 | HL7 FHIR (structural) | OMOP CDM,Low,Medium
+,,,,,,,
+,,,,,,,
+,,,,,,,
+71,Bucket 5 - Molecular Analysis: Analytical and Post-Analytical,UMI strategy (unique molecular identifiers),Enum,"Enum: None | Simplex_UMI | Duplex_UMI | Molecular_Barcoding_MID.
+
+Constraints / Possible Values
+None / Simplex_UMI (single-stranded error correction) / Duplex_UMI (double-stranded; recommended for resistance monitoring) / Molecular_Barcoding_MID (inline barcode; subtype of simplex UMI)",BLOODPAC MTDE v1.0 | HL7 FHIR (structural) | OMOP CDM,Medium,Medium
+,,,,,,,
+,,,,,,,
+,,,,,,,
+72,Bucket 5 - Molecular Analysis: Analytical and Post-Analytical,"Sequencer platform, run ID, and key run metrics",String (platform) + String (run ID) + Float (metrics) - multi-component,"Compound: platform_name (Enum) + run_ID (String) + mean_Q30_% (Float, ?80% required). Platform enum: Illumina_NovaSeq_6000 | Illumina_NovaSeq_X_Plus | Illumina_NextSeq_1000 | Illumina_NextSeq_2000 | Illumina_MiSeq | ONT_PromethION | PacBio_Revio | Other. Run QC metrics: Q30 ?80% minimum (NovaSeq 6000 typically ?85%; NextSeq 2000 typically ?90% for 2*150 bp). Cluster density (400–1,200 K/mm²) applies to random-cluster platforms (HiSeq, older MiSeq only). For patterned flow cell platforms (NovaSeq 6000, NextSeq 1000/2000), use cluster occupancy (%) as QC metric.
+
+Constraints / Possible Values
+Platform: Illumina NovaSeq 6000 / Illumina NovaSeq X Plus / Illumina NextSeq 1000 / Illumina NextSeq 2000 / Illumina MiSeq / ONT PromethION / PacBio Revio / Other (NextSeq 550 is legacy - record if in use) | Run metrics: Q30 ?80% (minimum floor); cluster density K/mm² (random-cluster platforms only); cluster occupancy % (patterned flow cell platforms) | Format: Compound (String platform + String run_id + Float metrics)",LOINC | HL7 FHIR (structural) | OMOP CDM | ISO 15189,Low,Medium
+,,,,,,,
+,,,,,,,
+,,,,,,,
+73,Bucket 5 - Molecular Analysis: Analytical and Post-Analytical,Mean on-target coverage depth - ctDNA NGS (*),"Float (fold coverage, ×)","Type: Float (×). Range: 100*–50,000×. Minimum for clinical ctDNA: ?500× (mutation detection); ?1,000× (resistance monitoring); ?10,000× (MRD).
+
+Constraints / Possible Values
+Type: Float | Min: 100 | Max: 50000 | Typical range for standard ctDNA panels: 1,000–10,000×; MRD assays: 40,000–50,000×| Unit: × (fold coverage) | Clinical threshold: ?500× for standard ctDNA; ?2000× for MRD",LOINC | HL7 FHIR (structural) | OMOP CDM | ISO 15189,Medium,Medium
+,,,,,,,
+,,,,,,,
+,,,,,,,
+74,Bucket 5 - Molecular Analysis: Analytical and Post-Analytical,EGFR mutation detected - ctDNA (HGVS notation),String (HGVS notation) + Enum (mutation subtype) + classification,"Type: String (HGVS notation). Additional special values: Not_detected | Non-informative_result | Below_LOD. Non-informative: tumour fraction below assay LOD (does not confirm absence).
+
+Constraints / Possible Values
+HGVS Format: NM_005228.5:c.[coding DNA change] p.[protein change] | Subtypes: Exon 19 deletion / L858R / T790M / Exon 20 insertion / C797S / G719X / L861Q / S768I / Exon 18 mutation / Other sensitising / Other resistance / Wild-type
+
+HGVS examples: Exon 19 del: NM_005228.5(EGFR):c.2235_2249del15 p.(Glu746_Ala750del); L858R: NM_005228.5(EGFR):c.2573T>G p.(Leu858Arg); T790M: NM_005228.5(EGFR):c.2369C>T p.(Thr790Met); C797S: NM_005228.5(EGFR):c.2389T>A p.(Cys797Ser). G719X (sensitising, exon 18) and L861Q (sensitising, exon 21) are clinically significant sensitising mutations recognised by NCCN/ESMO guidelines; S768I is an uncommon sensitising mutation.",HGVS | COSMIC | ClinVar | LOINC | SNOMED CT | HL7 FHIR (structural) | OMOP CDM,Low,High
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+75,Bucket 5 - Molecular Analysis: Analytical and Post-Analytical,ctDNA VAF at timepoint (%),"Float (percentage, 0.000–100.000)","Type: Float (%). Range: 0.001%–100.00%.
+
+Constraints / Possible Values
+Type: Float | Min: 0.001 | Max: 50 | Typical range: 0.01–15% (Stage IV cancer VAF can exceed 15% in high-burden disease) | Unit: % (VAF) | Healthy: 0 (not detected); Stage IV: 1–15%; MRD: 0.001–0.1% ",HGVS | LOINC | HL7 FHIR (structural) | OMOP CDM | SNOMED CT,Medium,Medium
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+76,Bucket 5 - Molecular Analysis: Analytical and Post-Analytical,Tumour fraction estimate (ppm / %),Float (ppm or %),"Compound: tumour_fraction_ppm (Float, range 10–1,000,000 ppm) + tumour_fraction_% (Float, 0.001–100%)
+
+Constraints / Possible Values
+Type: Float | Min: 0.001 | Max: 10 | Typical range: 0.001–3.2% | Unit: % ",LOINC | HL7 FHIR (structural) | OMOP CDM | SNOMED CT,Medium,Medium
+,,,,,,,
+,,,,,,,
+,,,,,,,
+77,Bucket 5 - Molecular Analysis: Analytical and Post-Analytical,CHIP status per variant (yes / no / unknown),Enum (per variant),"Enum per variant: CHIP_positive | CHIP_negative | CHIP_suspected | Unknown.
+
+Constraints / Possible Values
+CHIP_positive / CHIP_negative / CHIP_suspected (variant in CHIP-associated gene, buffy coat unavailable, VAF pattern consistent with CHIP) / Unknown / Pending germline confirmation
+",HGVS | COSMIC | ClinVar | SNOMED CT | HL7 FHIR (structural) | OMOP CDM,Medium,Medium
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+78,Bucket 5 - Molecular Analysis: Analytical and Post-Analytical,"Variant tier classification (Tier I–IV, AMP/ASCO/CAP)",Enum,"Enum: Tier_I | Tier_II | Tier_III | Tier_IV. I=strong clinical significance; II=potential significance; III=unknown significance; IV=benign/likely benign.
+
+Constraints / Possible Values
+Tier I (strong clinical significance) / Tier II (potential clinical significance) / Tier III (uncertain clinical significance) / Tier IV (benign or likely benign)",AMP/ASCO/CAP 2017 Tier Classification | HGVS | COSMIC | ClinVar | LOINC | SNOMED CT | HL7 FHIR (structural) | OMOP CDM,Medium,Medium
+,,,,,,,
+,,,,,,,
+,,,,,,,
+79,Bucket 5 - Molecular Analysis: Analytical and Post-Analytical,Clinical report classification (Detected / Not Detected / Non-Informative),Enum,"Enum (estimated): Detected | Not_detected | Non-informative_Low_TF | Non-informative_QC_Fail
+
+Constraints / Possible Values
+Detected (mutation present above LOD) / Not_detected (no mutation above LOD, satisfactory assay quality) / Non-informative_Low_TF (tumour fraction below assay LOD - cannot exclude disease) / Non-informative_QC_Fail (assay technical failure: insufficient cfDNA or QC metric failure)",SNOMED CT | LOINC | HL7 FHIR (structural) | OMOP CDM,Medium,High
+,,,,,,,
+,,,,,,,
+,,,,,,,
+80,Bucket 5 - Molecular Analysis: Analytical and Post-Analytical,"Assay limit of detection (LOD, %)",Float (percentage),"Type: Float (%). Range: 0.001%–5.0% (estimated).
+
+Constraints / Possible Values
+Type: Float | Min: 0.0005 | Max: 5 | Typical range: 0.05–0.5% VAF | Unit: % VAF | Clinical LOD: 0.1% standard panels; 0.01–0.001% MRD assays",LOINC | ISO 15189 | HL7 FHIR (structural) | OMOP CDM | SNOMED CT,Medium,Medium
+,,,,,,,
+,,,,,,,
+,,,,,,,
+81,Bucket 5 - Molecular Analysis: Analytical and Post-Analytical,"Dominant clone identified (VAF-based, boolean and %)",Boolean + Float (dominant clone VAF %),"Compound: clone_identified (Boolean: True/False) + dominant_VAF_% (Float, 0–100%).
+
+Constraints / Possible Values
+dominant_clone_identified: True / False | dominant_clone_vaf_percent: Type: Float | Min: 0 | Max: 50 | Unit: % VAF",HGVS | LOINC | HL7 FHIR (structural) | OMOP CDM | SNOMED CT,Low,Low
+,,,,,,,
+,,,,,,,
+,,,,,,,
+82,Bucket 5 - Molecular Analysis: Analytical and Post-Analytical,PCR result (Ct value for RT-PCR; copies/mL for ddPCR),Float (Ct value or copies/mL) - assay-type dependent,"Compound: PCR_method (Enum: RT-PCR | ddPCR | cobas | BEAMing | Other) + result_value (Float)
+
+Constraints / Possible Values
+Type: Float assay-dependent | RT-PCR Ct: Min: 15 | Max: 40 (Ct >40 = negative/below LOD; Ct <20 in cfDNA triggers QC review for gDNA contamination) | Unit: cycles | ddPCR copies/mL: Min: 0.01 | Max: 10000 | Unit: copies/mL | Negative: Ct >40 or 0 copies/mL
+",LOINC | SNOMED CT | HL7 FHIR (structural) | OMOP CDM | ISO 15189,Low,Medium
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+83,"Bucket 6 - MDT, Treatment, Monitoring, and Resistance",Tissue sufficiency status at MDT,Enum,"Harmonised enum: Sufficient_all_tests | Sufficient_primary_tests_only | Insufficient_molecular_result_unavailable | Repeat_biopsy_requested | Unavailable | Pending
+
+Constraints / Possible Values
+Sufficient_all_tests / Sufficient_primary_tests_only / Insufficient_molecular_result_unavailable / Repeat_biopsy_requested / Unavailable / Pending",SNOMED CT | HL7 FHIR (structural),Medium,Medium
+,,,,,,,
+,,,,,,,
+,,,,,,,
+84,"Bucket 6 - MDT, Treatment, Monitoring, and Resistance",MDT treatment recommendation,Coded (SNOMED CT / dm+d / RxNorm) + Structured text,"Compound: recommended_therapy (Enum: Osimertinib_80mg_OD | Osimertinib_chemotherapy | Amivantamab_lazertinib | Dacomitinib_45mg_OD | Afatinib_40mg_OD | Gefitinib_250mg_OD | Erlotinib_150mg_OD | Platinum_chemotherapy | Adjuvant_osimertinib_36mo | LAURA_osimertinib_unresectable_stage3 | Best_supportive_care | Clinical_trial | Other) + treatment_intent (Enum: Curative | Palliative | Adjuvant | Neoadjuvant_clinical_trial_only) + stage_context (Enum: Metastatic_1L | Metastatic_2L_T790M | Adjuvant_IB_IIIA | Locally_advanced_stage3 | Clinical_trial).
+
+Constraints / Possible Values
+Format: Compound (String SNOMED CT code + String INN drug name + String recommendation text)",SNOMED CT | dm+d | ATC | HL7 FHIR (structural),Low,High
+,,,,,,,
+,,,,,,,
+,,,,,,,
+85,"Bucket 6 - MDT, Treatment, Monitoring, and Resistance",Results embargo status (boolean),Boolean,"Type: Boolean: True | False. True = results must not auto-release to patient portal until verbal consultation confirmed
+
+Constraints / Possible Values
+True / False | Clinical meaning: True = results held pending MDT review; False = results released
+
+Additional recommended metadata: embargo_lift_datetime (ISO 8601) and releasing_clinician_role - more relevant for US market",HL7 FHIR (structural),Low,Low
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+86,"Bucket 6 - MDT, Treatment, Monitoring, and Resistance",Treatment intent,Enum,"Enum: Curative_definitive | Palliative | Adjuvant | Neoadjuvant_clinical_trial_only | Best_supportive_care
+
+Constraints / Possible Values
+Curative_definitive (includes radical intent) / Palliative / Adjuvant / Neoadjuvant_clinical_trial_only (EGFR+ NSCLC: investigational only) / Best_supportive_care",SNOMED CT | HL7 FHIR (structural),High,Medium
+,,,,,,,
+,,,,,,,
+,,,,,,,
+87,"Bucket 6 - MDT, Treatment, Monitoring, and Resistance","Drug name, dose, and route of administration",String (INN + brand) + Float (mg) + Enum (route),"Compound: drug_name_INN (String) + dose_mg (Float) + frequency (Enum: OD | BD | TID | QID | Weekly | q3w | Other) + route (Enum: Oral | IV_infusion | Subcutaneous | Other). 
+
+Constraints / Possible Values
+Drug INN: osimertinib / erlotinib / gefitinib / afatinib / dacomitinib / amivantamab / lazertinib / Other | Dose: Type: Float mg | Range: 40–1400 mg  | Route: Oral / Intravenous / Subcutaneous / Other",dm+d | ATC | SNOMED CT | HL7 FHIR (structural),High,High
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+88,"Bucket 6 - MDT, Treatment, Monitoring, and Resistance",Baseline ILD status (boolean),Boolean + Enum,"Compound: ild_present (Boolean: True/False) + ild_type (Enum: None | NSIP (Nonspecific Interstitial Pneumonia) | UIP (Usual Interstitial Pneumonia) | DIP (Desquamative Interstitial Pneumonia) | RB-ILD | AIP | LIP | Unknown) + Severity (Enum: N/A | Mild (Grade 1 - asymptomatic, radiographic findings only) | Moderate (Grade 2 - symptomatic, not ADL-limiting) | Severe (Grade 3-4 - ADL-limiting/life-threatening)).
+
+Constraints / Possible Values
+ild_present: True / False | ild_type: None / NSIP / UIP / DIP / RB-ILD / AIP / LIP / Unknown | Severity: N/A / Mild / Moderate / Severe",SNOMED CT | HL7 FHIR (structural),Medium,Medium
+,,,,,,,
+,,,,,,,
+,,,,,,,
+89,"Bucket 6 - MDT, Treatment, Monitoring, and Resistance","ICI exposure history (time since last ICI, months)",Float (months) + Boolean (recent exposure flag),"Compound: recent_ICI_exposure_le3months (Boolean: True/False) + months_since_last_ICI (Float) + last_ICI_drug (Enum: nivolumab | pembrolizumab | atezolizumab | durvalumab | avelumab | cemiplimab | ipilimumab | tremelimumab | None).
+
+Constraints / Possible Values
+recent_ICI_exposure_le3months: True / False | months_since_last_ICI: Type: Float | Min: 0 | Max: 24 | Unit: months | last_ICI_drug: nivolumab / pembrolizumab / atezolizumab / durvalumab / avelumab / cemiplimab / ipilimumab / tremelimumab / None",SNOMED CT | ATC | HL7 FHIR (structural),Medium,Medium
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+90,"Bucket 6 - MDT, Treatment, Monitoring, and Resistance",Surgical margin status (R0 / R1 / R2),Enum,"Enum: R0 | R1 | R2 | RX | Not_applicable. R0 = complete resection; R1 = microscopic positive margin; R2 = macroscopic positive margin; RX = unknown/cannot be assessed margin status.
+
+Constraints / Possible Values
+R0  / R1  / R2  / RX  / Not_applicable ",SNOMED CT | HL7 FHIR (structural),Medium,Medium
+,,,,,,,
+,,,,,,,
+,,,,,,,
+91,"Bucket 6 - MDT, Treatment, Monitoring, and Resistance",RECIST 1.1 response assessment category,Enum (RECIST 1.1),"Enum (RECIST 1.1): CR | PR | SD | PD. 
+
+Constraints / Possible Values
+Complete Response (CR) / Partial Response (PR) / Stable Disease (SD) / Progressive Disease (PD)",RECIST 1.1 | SNOMED CT | HL7 FHIR (structural),Medium,Medium
+,,,,,,,
+,,,,,,,
+,,,,,,,
+92,"Bucket 6 - MDT, Treatment, Monitoring, and Resistance",Sum of target lesion diameters (mm) at each monitoring timepoint,Float (mm) + Date (measurement date) + categorical delta from baseline,"Type: Float (mm). Range: 0.0–500.0 (sum of longest diameters of up to 5 target lesions, max 2 per organ).
+
+Constraints / Possible Values
+sum_mm: Type: Float | Min: 0 | Max: 500 | Unit: mm | assessment_date: Format: ISO 8601 YYYY-MM-DD (date of imaging study, not date of radiology report) | reference_sum_baseline_mm: Float | reference_sum_nadir_mm: Float | recist_category: CR / PR / SD / PD / NE | percent_change_from_baseline: Type: Float | Unit: % | percent_change_from_nadir: Type: Float | Unit: % ",RECIST 1.1 | LOINC | HL7 FHIR (structural),Medium,Medium
+,,,,,,,
+,,,,,,,
+,,,,,,,
+93,"Bucket 6 - MDT, Treatment, Monitoring, and Resistance",Clearance of primary EGFR mutation from ctDNA (boolean),Boolean + Date,"Compound: mutation_cleared (Boolean: True/False) + clearance_date (ISO 8601 YYYY-MM-DD) + clearance_VAF_at_timepoint (Float, 0–100%).
+
+Constraints / Possible Values
+mutation_cleared: True / False | clearance_date: Format: ISO 8601 YYYY-MM-DD | NULL permitted: Yes (clearance_date NULL if mutation not cleared)",SNOMED CT | HL7 FHIR (structural),High,Medium
+,,,,,,,
+,,,,,,,
+,,,,,,,
+94,"Bucket 6 - MDT, Treatment, Monitoring, and Resistance",TKI discontinuation flare suspected (boolean),Boolean,"Type: Boolean: True | False. True = clinical suspicion of TKI discontinuation flare
+
+Constraints / Possible Values
+flare_suspected: True / False | Clinical meaning: True = clinically significant or radiological progression occurring within 21 days of TKI discontinuation, not explained by pre-existing disease progression trajectory",SNOMED CT | HL7 FHIR (structural),Medium,Medium
+,,,,,,,
+,,,,,,,
+,,,,,,,
+95,"Bucket 6 - MDT, Treatment, Monitoring, and Resistance",Progression type at re-assessment,Enum,"Enum: Oligoprogression | Systemic_multi-site | CNS-only | Asymptomatic_slow
+
+Constraints / Possible Values
+Oligoprogression / Systemic_multi-site / Asymptomatic_slow / Hyperprogression",SNOMED CT | RECIST 1.1 | HL7 FHIR (structural),Medium,Medium
+,,,,,,,
+,,,,,,,
+,,,,,,,
+96,"Bucket 6 - MDT, Treatment, Monitoring, and Resistance",Resistance mechanism detected (HGVS notation),String (HGVS notation) + Enum (resistance class),"Type: String (HGVS notation, multi-value). Key resistance mutations: T790M (NM_005228.5:c.2369C>T) | C797S (NM_005228.5:c.2389T>A) | L718Q, L792H | MET_amplification | HER2_ERBB2_amplification | BRAF_V600E | KRAS_G12X | PIK3CA_mutation | Cell_cycle_gene_alterations_CCNE1_CDK6 | SCLC_transformation | Squamous_transformation | Unknown_mechanism. Multiple mutations co-possible.
+
+Constraints / Possible Values
+HGVS Format: NM_[RefSeq]:c.[change] p.[protein] | Resistance classes: On-target EGFR mutation (T790M, C797S, L718Q, L792H) / Bypass pathway (MET amplification, BRAF V600E, KRAS, HER2 amplification, PIK3CA, cell cycle alterations) / Histologic transformation (SCLC, squamous)",HGVS | COSMIC | ClinVar | SNOMED CT | HL7 FHIR (structural),Low,Medium
+,,,,,,,
+,,,,,,,
+,,,,,,,
+97,"Bucket 6 - MDT, Treatment, Monitoring, and Resistance",Histologic transformation detected (boolean),Boolean,"Compound: transformation_detected (Boolean: True/False) + transformation_type (Enum: No_transformation | SCLC_transformation | Squamous_transformation | Combined_SCLC_adenocarcinoma | Large_cell_neuroendocrine_carcinoma_transformation | Other_histologic_transformation)
+
+Constraints / Possible Values
+transformation_detected: True / False | transformation_type: No_transformation / SCLC_transformation / Squamous_transformation / Combined_SCLC_adenocarcinoma / Large_cell_neuroendocrine_carcinoma_transformation / Other_histologic_transformation",SNOMED CT | ICD-O-3 | HL7 FHIR (structural),Low,Medium
+,,,,,,,
+,,,,,,,
+,,,,,,,
+98,"Bucket 6 - MDT, Treatment, Monitoring, and Resistance",Protocol region (US-NCCN / EU-ESMO / UK-NICE),Enum,"Enum: US-NCCN | EU-ESMO | UK-NICE | Japan-PMDA | APAC-Other | Other
+
+US-NCCN / EU-ESMO / UK-NICE / Japan-PMDA / APAC-Other / Other",HL7 FHIR (structural),High,High
+,,,,,,,
+,,,,,,,
+,,,,,,,
+99,"Bucket 6 - MDT, Treatment, Monitoring, and Resistance",Time from initial diagnosis to progression (months),Float (months),"Type: Float (months). Range: 0.0–120.0. Calculated: (date_progression ? date_treatment_initiation) in months.
+
+Constraints / Possible Values
+Type: Float | Min: 0 | Max: 120 | Typical range: 3.5–42 months | Unit: months",HL7 FHIR (structural),High,High
+,,,,,,,
+,,,,,,,
+,,,,,,,
+100,Bucket 7 - Future Modalities: Pre-Analytical and Analytical,Assay scope - methylation profiling,Enum,Enum: Targeted_panel | Genome-wide. Allowed values: Targeted CpG panel | Genome-wide WGBS | cfMeDIP-seq | RRBS | EPIC array (850K/v1.0) | EPIC array (930K/v2.0) | 450K array | EM-seq | TET-assisted_bisulfite (TAB-seq) | TAPS (TET-assisted pyridine borane sequencing),No formal standard ,Low,Low
+101,Bucket 7 - Future Modalities: Pre-Analytical and Analytical,Cytosine conversion chemistry,Enum,Enum: Bisulfite | Enzymatic. Allowed values: Bisulfite conversion (BS-seq) | Enzymatic methyl-seq (EM-seq) | Oxidative bisulfite (oxBS) | TET-assisted bisulfite (TAB-seq) | TAPS,No formal standard ,Low,Low
+102,Bucket 7 - Future Modalities: Pre-Analytical and Analytical,Conversion efficiency (%),Float (%),"Type: Float (%). Range: 90.0–100.0. 
+",No formal standard ,Low,Low
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+103,Bucket 7 - Future Modalities: Pre-Analytical and Analytical,cfDNA extraction method - methylation-preserving,Enum,Enum: Standard_silica_column | Microfluidic_size-exclusion | Nanoporous_MOF | Bead-based_magnetic | Size-selective_precipitation | cfDNA_dedicated_kit. ,No formal standard ,Low,Low
+104,Bucket 7 - Future Modalities: Pre-Analytical and Analytical,Clinical indication - fragmentomics,Enum,Enum: High-risk_surveillance | Monitoring_add-on_to_ctDNA_NGS | Standalone_early_detection | Relapse_detection.  Allowed clinical indications: Early cancer detection | Treatment response monitoring | MRD detection | Tissue-of-origin determination | CHIP characterisation | Screening | Relapse detection ,No formal standard ,Low,Low
+105,Bucket 7 - Future Modalities: Pre-Analytical and Analytical,Sub-100 bp fragment recovery fraction,Float (fraction),"Type: Float (fraction, 0.00–1.00). 
+
+Constraints / Possible Values
+Min: 0.001 | Max: 0.10 |  Unit: Fraction of total cfDNA",No formal standard ,Low,Low
+,,,,,,,
+,,,,,,,
+,,,,,,,
+106,Bucket 7 - Future Modalities: Pre-Analytical and Analytical,Fragment size peak (bp) - fragmentomics,Float (bp),"Type: Float (bp)
+
+Constraints / Possible Values
+Min: 100 | Max: 200 | Typical healthy peak: 166 bp | Cancer peak range: 130–165 bp | Unit: bp",No formal standard ,Low,Low
+,,,,,,,
+,,,,,,,
+,,,,,,,
+107,Bucket 7 - Future Modalities: Pre-Analytical and Analytical,Library preparation protocol - fragment-end preservation,Enum,Enum: End-motif_preserving_ligation-based | Standard_end-repair_ligation | Nanopore_direct_sequencing | Strand-specific_ligation | TELL-seq | SRSLY. ,No formal standard ,Low,Low
+108,Bucket 7 - Future Modalities: Pre-Analytical and Analytical,Proteomic assay platform,Enum,Enum: SomaScan_7K | SomaScan_11K | Olink_Explore_1536 (legacy - largely superseded by Explore HT) | Olink_Explore_3072 | Olink_Explore_HT | Olink_Oncology_II | DIA-MS | PRM-MS | VeriStrat_MS | Other,No formal standard,Low,Low
+109,Bucket 7 - Future Modalities: Pre-Analytical and Analytical,Sample type - proteomics,Enum,Enum: EDTA_plasma | Lithium_heparin_plasma | Serum | Phospho-inhibitor_plasma | CTAD_plasma.,SPREC V3.0 ,Low,Low
+110,Bucket 7 - Future Modalities: Pre-Analytical and Analytical,Clinical indication - proteomics,Enum,Enum: Treatment_baseline | Serial_monitoring | Resistance_characterisation | Immune_profiling | Pharmacodynamic_monitoring.  Allowed indications: Biomarker discovery | Treatment monitoring | Resistance characterisation | Immune profiling | Companion diagnostic | Multi-omic integration,No formal standard ,Low,Low
+111,Bucket 7 - Future Modalities: Pre-Analytical and Analytical,Collection to centrifugation time (minutes),Integer (minutes),"Type: Integer (minutes). Range: 0–120 
+
+Constraints 
+Min: 0 | Max: 120 | Typical: ?30 | Unit: minutes.",No formal standard ,Low,Low
+112,Bucket 7 - Future Modalities: Pre-Analytical and Analytical,Hemolysis grade (SPREC),Enum,Enum: H0 | H1 | H2 | H3,SPREC V3.0 (fluid sample precentrifugation and processing coding),Low,Low
+113,Bucket 7 - Future Modalities: Pre-Analytical and Analytical,Phosphatase inhibitor added (boolean),Boolean,Type: Boolean: True | False,No formal standard ,Low,Low
+114,Bucket 7 - Future Modalities: Pre-Analytical and Analytical,Protein depletion applied (boolean),Compound: Boolean + Enum (method),Compound: depletion_applied (Boolean: True | False) + depletion_method (Enum: IgY-14_immunoaffinity | Seppro_IgY14 | Agilent_MARS_14 | ProteoSpin | MARS_14 | Other | Not_applicable). ,No formal standard ,Low,Low
+115,Bucket 7 - Future Modalities: Pre-Analytical and Analytical,Freeze-thaw cycle count - proteomics,Integer,Type: Integer. Range: 0–10; Min: 0 | Max: 5 | Unit: cycles ,No formal standard ,Low,Low
+116,Bucket 7 - Future Modalities: Pre-Analytical and Analytical,Protein stabiliser added (boolean),Boolean,Type: Boolean: True | False,No formal standard ,Low,Low
+117,Bucket 7 - Future Modalities: Pre-Analytical and Analytical,Spatial transcriptomics platform selected,Enum,Enum: 10X_Visium_CytAssist | 10X_Visium_HD | 10X_Xenium_In_Situ | NanoString_CosMx_SMI | NanoString_GeoMx_DSP | Stereoseq | MERFISH_Vizgen | Resolve_Biosciences | Other,No formal standard ,Low,Low
+118,Bucket 7 - Future Modalities: Pre-Analytical and Analytical,Tissue preservation method - spatial,Enum,"Enum: FFPE | Fresh_frozen_OCT | Fixed_frozen | FFPE_with_RNA_preservation. 
+
+",No formal standard ,Low,Low
+119,Bucket 7 - Future Modalities: Pre-Analytical and Analytical,Snap freeze time (minutes),Integer (minutes),Type: Integer (minutes). Acceptable range: 0–30 min,No formal standard,Low,Low
+120,Bucket 7 - Future Modalities: Pre-Analytical and Analytical,Section thickness (µm) - spatial,Integer (µm),Type: Integer (µm). Allowed values: 3 | 4 | 5 | 6 | 7 | 8 | 10 ,No formal standard,Low,Low
+121,Bucket 7 - Future Modalities: Pre-Analytical and Analytical,DV200 score (%),Float (%),Type: Float (%). Range: 0.0–100.0,No formal standard ,Low,Low
+122,Bucket 7 - Future Modalities: Pre-Analytical and Analytical,RNA integrity number (RIN),Float,Type: Float. Range: 1.0–10.0,No formal standard ,Low,Low
+123,Bucket 7 - Future Modalities: Pre-Analytical and Analytical,RNA QC pass/fail,Enum,Enum: Pass | Fail | Not_performed,No formal standard ,Low,Low
+124,Bucket 7 - Future Modalities: Pre-Analytical and Analytical,mIF markers panel,String (structured list),"Type: String (structured list of antibody markers with clone identifiers). Format: Marker(Clone), comma-separated. Minimum markers for TME assessment: PanCK + PD-L1 + one T-cell marker + DAPI. Standard 7-plex NSCLC panel: CD3 | CD8 | CD68 | PD-L1 | FOXP3 | pan-CK | DAPI. Additional markers: CD4, CD20, CD56, HLA-DR, Granzyme B",No formal standard ,Low,Low
+125,Bucket 7 - Future Modalities: Pre-Analytical and Analytical,Antibody lot number (mIF),String (per antibody in panel),Type: String (alphanumeric lot ID) per antibody in panel. Format: one lot number per antibody,No formal standard ,Low,Low
+126,Bucket 7 - Future Modalities: Pre-Analytical and Analytical,Staining protocol version,String (version identifier),Type: String (version identifier),No formal standard,Low,Low
+127,Bucket 7 - Future Modalities: Pre-Analytical and Analytical,Section age at staining (days unstained),Integer (days),Type: Integer (days). Range: 0–1000+ ,No formal standard ,Low,Low
+128,Bucket 7 - Future Modalities: Pre-Analytical and Analytical,Antigen retrieval buffer pH,Enum,Enum: pH_6.0_citrate | pH_9.0_Tris-EDTA | pH_8.0_EDTA | pH_7.4_neutral | PIER_protease-induced | No_antigen_retrieval,No formal standard ,Low,Low
+129,Bucket 7 - Future Modalities: Pre-Analytical and Analytical,Staining cycles count (mIF),Integer,Type: Integer. Range: 1–9,No formal standard ,Low,Low
+130,Bucket 7 - Future Modalities: Pre-Analytical and Analytical,Saliva collection stimulation method,Enum,Enum: Unstimulated_passive_drool | Stimulated | Swab-based,No formal standard ,Low,Low
+131,Bucket 7 - Future Modalities: Pre-Analytical and Analytical,Saliva volume (mL),Float (mL),Type: Float (mL). Range: 0.03–15.0.,No formal standard ,Low,Low
+132,Bucket 7 - Future Modalities: Pre-Analytical and Analytical,Saliva consistency,Enum,Enum: Watery | Normal | Viscous,No formal standard ,Low,Low
+133,Bucket 7 - Future Modalities: Pre-Analytical and Analytical,Pre-collection fast duration (minutes),Integer (minutes),Type: Integer (minutes). Range: 0–240.,No formal standard ,Low,Low
+134,Bucket 7 - Future Modalities: Pre-Analytical and Analytical,Oral blood contamination flag,Boolean,Type: Boolean: True | False,No formal standard ,Low,Low
+135,Bucket 7 - Future Modalities: Pre-Analytical and Analytical,Saliva preservative / stabiliser used,Enum,Enum: None | Streck_Saliva_Cell-Free_NA | OralSave | RNAPRO | OASiS_SuperSAL | N-acetylcysteine | Other. Additional options: RNAlater | DNA/RNA Shield | Oragene | TE buffer,No formal standard ,Low,Low
+136,Bucket 7 - Future Modalities: Pre-Analytical and Analytical,BAL collected (boolean),Boolean,Type: Boolean: True | False.,SNOMED CT | HL7 FHIR (structural) | ATS/ERS BAL guidelines ,Low,Low
+137,Bucket 7 - Future Modalities: Pre-Analytical and Analytical,BAL instilled volume (mL),Integer (mL),Type: Integer (mL). Range: 60–300,ATS/ERS BAL guideline | HL7 FHIR (structural),Low,Low
+138,Bucket 7 - Future Modalities: Pre-Analytical and Analytical,BAL recovered volume (mL),Integer (mL),Type: Integer (mL). Range: 10–200. ,ATS/ERS BAL guidelines | HL7 FHIR (structural),Low,Low
+139,Bucket 7 - Future Modalities: Pre-Analytical and Analytical,BAL recovery (%),Float (%),Type: Float (%). Range: 0.0–100.0,ATS/ERS BAL guidelines | HL7 FHIR (structural),Low,Low
+140,Bucket 7 - Future Modalities: Pre-Analytical and Analytical,BAL fraction used (for molecular analysis),Enum,Enum: Bronchial_wash | Alveolar | Combined,No formal standard,Low,Low
+141,Bucket 7 - Future Modalities: Pre-Analytical and Analytical,Extracellular vesicle isolation performed (boolean),Boolean,Type: Boolean: True | False.,MISEV2023 guidelines,Low,Low
+142,Bucket 7 - Future Modalities: Pre-Analytical and Analytical,Assay validation status,Enum,Enum: CE-IVD | FDA_cleared | FDA_approved | CLIA_certified | Institutional_validation | Research_only,ISO 15189:2022  | CLSI EP09 / EP15 / EP25 | FDA IVD classification | CE-IVD Regulation EU 2017/746 | HL7 FHIR (structural),Low,Low

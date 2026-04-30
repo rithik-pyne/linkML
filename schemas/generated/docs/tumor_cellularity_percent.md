@@ -1,0 +1,97 @@
+
+
+# Slot: tumor_cellularity_percent 
+
+
+
+URI: [clinical_model:tumor_cellularity_percent](https://uk-cpi.com/clinical_model/tumor_cellularity_percent)
+Alias: tumor_cellularity_percent
+
+<!-- no inheritance hierarchy -->
+
+
+
+
+
+## Applicable Classes
+
+| Name | Description | Modifies Slot |
+| --- | --- | --- |
+| [Biopsy](Biopsy.md) | Tissue or liquid biopsy procedure - multiple rows per patient |  no  |
+
+
+
+
+
+
+## Properties
+
+### Type and Range
+
+| Property | Value |
+| --- | --- |
+| Range | [Float](Float.md) |
+| Domain Of | [Biopsy](Biopsy.md) |
+
+### Cardinality and Requirements
+
+| Property | Value |
+| --- | --- |
+### Value Constraints
+
+| Property | Value |
+| --- | --- |
+| Minimum Value | 0 |
+| Maximum Value | 100 |
+
+
+
+
+
+
+
+
+
+
+
+
+## Identifier and Mapping Information
+
+
+
+
+
+### Schema Source
+
+
+* from schema: https://ngdx.org/clinical_model
+
+
+
+
+## Mappings
+
+| Mapping Type | Mapped Value |
+| ---  | ---  |
+| self | clinical_model:tumor_cellularity_percent |
+| native | clinical_model:tumor_cellularity_percent |
+
+
+
+
+## LinkML Source
+
+<details>
+```yaml
+name: tumor_cellularity_percent
+from_schema: https://ngdx.org/clinical_model
+rank: 1000
+alias: tumor_cellularity_percent
+domain_of:
+- Biopsy
+range: float
+minimum_value: 0
+maximum_value: 100
+
+```
+</details>

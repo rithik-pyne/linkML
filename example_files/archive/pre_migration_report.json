@@ -1,0 +1,7 @@
+{
+  "total_rows": 20,
+  "to_imaging": 20,
+  "to_molecular": 0,
+  "to_clinical": 1,
+  "fk_valid": true
+}

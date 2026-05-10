@@ -1,6 +1,6 @@
 export interface TimelineEvent {
   date: string;
-  event_type: 'molecular_test' | 'treatment_start' | 'treatment_end' | 'response_assessment' | 'imaging' | 'clinical_assessment';
+  event_type: 'molecular_test' | 'treatment_start' | 'treatment_end' | 'imaging_response' | 'clinical_response' | 'imaging_study' | 'clinical_assessment';
   description: string;
   data: Record<string, any>;
 }

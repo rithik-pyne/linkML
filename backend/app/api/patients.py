@@ -355,13 +355,13 @@ async def get_treatment_history(patient_id: str) -> Dict[str, Any]:
 @router.get("/patients/{patient_id}/response")
 async def get_response_assessments(patient_id: str) -> Dict[str, Any]:
     """
-    Get all response assessments for a patient
+    Get all response assessments for a patient (imaging, molecular, clinical)
 
     Args:
         patient_id: Patient identifier (e.g., NGDX-001)
 
     Returns:
-        Dictionary with assessments array and total count
+        Dictionary with imaging_responses, molecular_responses, clinical_responses arrays
 
     Raises:
         HTTPException: 404 if patient not found
@@ -371,40 +371,71 @@ async def get_response_assessments(patient_id: str) -> Dict[str, Any]:
     if not patient_check:
         raise HTTPException(status_code=404, detail=f"Patient {patient_id} not found")
 
-    response_sql = """
+    # Get imaging responses
+    imaging_response_sql = """
     SELECT
-        assessment_id,
+        imaging_response_id,
+        imaging_study_id,
         patient_id,
         treatment_id,
-        imaging_study_id,
-        molecular_test_id,
         assessment_date,
         assessment_type,
         recist_response,
         sum_target_lesions_mm,
         percent_change_from_baseline,
-        new_lesions_present,
+        new_lesions_present
+    FROM ImagingResponse
+    WHERE patient_id = ?
+    ORDER BY assessment_date
+    """
+    imaging_responses = execute_query(imaging_response_sql, (patient_id,))
+
+    # Get molecular responses
+    molecular_response_sql = """
+    SELECT
+        molecular_response_id,
+        molecular_test_id,
+        patient_id,
+        treatment_id,
+        assessment_date,
+        assessment_type,
         ctdna_vaf_percent,
-        ctdna_mutation_cleared,
         ctdna_tumor_fraction_percent,
-        ecog_status,
-        symptom_improvement,
+        ctdna_mutation_cleared
+    FROM MolecularResponse
+    WHERE patient_id = ?
+    ORDER BY assessment_date
+    """
+    molecular_responses = execute_query(molecular_response_sql, (patient_id,))
+
+    # Get clinical responses
+    clinical_response_sql = """
+    SELECT
+        clinical_response_id,
+        patient_id,
+        treatment_id,
+        event_date,
+        event_type,
         progression_detected,
         progression_type,
         time_to_progression_months,
         resistance_mutation_detected,
         resistance_mechanism,
         histologic_transformation
-    FROM ResponseAssessment
+    FROM ClinicalResponse
     WHERE patient_id = ?
-    ORDER BY assessment_date
+    ORDER BY event_date
     """
-    assessments = execute_query(response_sql, (patient_id,))
+    clinical_responses = execute_query(clinical_response_sql, (patient_id,))
 
     return {
         "patient_id": patient_id,
-        "assessments": assessments,
-        "total": len(assessments)
+        "imaging_responses": imaging_responses,
+        "molecular_responses": molecular_responses,
+        "clinical_responses": clinical_responses,
+        "total_imaging": len(imaging_responses),
+        "total_molecular": len(molecular_responses),
+        "total_clinical": len(clinical_responses)
     }
 
 

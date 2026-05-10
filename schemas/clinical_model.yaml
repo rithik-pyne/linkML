@@ -3,7 +3,11 @@ name: clinical_model
 title: NG-DX EGFR-NSCLC Clinical Data Model
 description: Clinical data model for EGFR-mutant NSCLC diagnostic pathway
 license: MIT
-version: 1.0.0
+version: 2.0.0
+comments:
+  - "v2.0.0: Replaced ResponseAssessment with ImagingResponse, MolecularResponse, ClinicalResponse"
+  - "Breaking change: ResponseAssessment removed - use specialized response classes"
+  - "Migration complete - all deprecated elements removed"
 
 prefixes:
   linkml: https://w3id.org/linkml/
@@ -146,25 +150,110 @@ classes:
       patient_id:
         identifier: false
 
-  ResponseAssessment:
-    description: Serial treatment response monitoring (RECIST + ctDNA) - multiple rows per patient
+  ImagingResponse:
+    description: Treatment response assessment based on imaging studies (RECIST criteria). Grain - one row per imaging study with documented radiologist assessment.
+    comments:
+      - Links to source ImagingStudy via required FK
+      - Used for RECIST-based response tracking over time
+      - treatment_id nullable for pre-treatment baseline scans
     slots:
-      - assessment_id
+      - imaging_response_id
+      - imaging_study_id
       - patient_id
       - treatment_id
-      - imaging_study_id
-      - molecular_test_id
       - assessment_date
       - assessment_type
       - recist_response
       - sum_target_lesions_mm
       - percent_change_from_baseline
       - new_lesions_present
+    slot_usage:
+      imaging_response_id:
+        identifier: true
+        required: true
+        range: string
+      imaging_study_id:
+        identifier: false
+        required: true
+        description: Source imaging study (REQUIRED - establishes lineage)
+      patient_id:
+        identifier: false
+        required: true
+        description: Conformed dimension for drill-across queries
+      treatment_id:
+        identifier: false
+        required: false
+        description: Treatment context (NULL for pre-treatment baseline)
+      assessment_date:
+        required: true
+      assessment_type:
+        required: true
+      recist_response:
+        required: false
+      sum_target_lesions_mm:
+        required: false
+      percent_change_from_baseline:
+        required: false
+      new_lesions_present:
+        required: false
+
+  MolecularResponse:
+    description: Treatment response assessment based on molecular testing (ctDNA/VAF tracking). Grain - one row per molecular test with documented ctDNA response.
+    comments:
+      - Links to source MolecularTest via required FK
+      - Used for serial ctDNA monitoring and VAF trend analysis
+      - treatment_id nullable for pre-treatment baseline tests
+    slots:
+      - molecular_response_id
+      - molecular_test_id
+      - patient_id
+      - treatment_id
+      - assessment_date
+      - assessment_type
       - ctdna_vaf_percent
-      - ctdna_mutation_cleared
       - ctdna_tumor_fraction_percent
-      - ecog_status
-      - symptom_improvement
+      - ctdna_mutation_cleared
+    slot_usage:
+      molecular_response_id:
+        identifier: true
+        required: true
+        range: string
+      molecular_test_id:
+        identifier: false
+        required: true
+        description: Source molecular test (REQUIRED - establishes lineage)
+      patient_id:
+        identifier: false
+        required: true
+        description: Conformed dimension for drill-across queries
+      treatment_id:
+        identifier: false
+        required: false
+        description: Treatment context (NULL for pre-treatment baseline)
+      assessment_date:
+        required: true
+      assessment_type:
+        required: true
+      ctdna_vaf_percent:
+        required: false
+      ctdna_tumor_fraction_percent:
+        required: false
+      ctdna_mutation_cleared:
+        required: false
+
+  ClinicalResponse:
+    description: Clinical outcome events (progression, resistance, histologic transformation). Grain - one row per documented clinical outcome event. Does NOT link to specific imaging/molecular tests - represents MDT consensus.
+    comments:
+      - Independent clinical event documentation
+      - May be informed by imaging/molecular data but grain is the MDT decision
+      - event_date is when progression was declared, may differ from test date
+      - treatment_id may be null for post-treatment events
+    slots:
+      - clinical_response_id
+      - patient_id
+      - treatment_id
+      - event_date
+      - event_type
       - progression_detected
       - progression_type
       - time_to_progression_months
@@ -172,18 +261,34 @@ classes:
       - resistance_mechanism
       - histologic_transformation
     slot_usage:
-      assessment_id:
+      clinical_response_id:
+        identifier: true
+        required: true
         range: string
       patient_id:
         identifier: false
+        required: true
+        description: Conformed dimension for drill-across queries
       treatment_id:
         identifier: false
         required: false
-      imaging_study_id:
-        identifier: false
+        description: Treatment context (may be post-treatment)
+      event_date:
+        required: true
+        description: Date event was documented (may differ from test date)
+      event_type:
+        required: true
+      progression_detected:
+        required: true
+      progression_type:
         required: false
-      molecular_test_id:
-        identifier: false
+      time_to_progression_months:
+        required: false
+      resistance_mutation_detected:
+        required: false
+      resistance_mechanism:
+        required: false
+      histologic_transformation:
         required: false
 
   ClinicalAssessment:
@@ -632,14 +737,40 @@ slots:
   discontinuation_reason:
     range: DiscontinuationReasonEnum
 
-  assessment_id:
+  imaging_response_id:
     identifier: true
     required: true
-    range: ResponseAssessment
+    range: string
+    pattern: "^IR-[0-9]{3}-[0-9]{3}$"
+    description: Primary key for ImagingResponse. Format - IR-{patient_num}-{counter} e.g. IR-001-001
+
+  molecular_response_id:
+    identifier: true
+    required: true
+    range: string
+    pattern: "^MR-[0-9]{3}-[0-9]{3}$"
+    description: Primary key for MolecularResponse. Format - MR-{patient_num}-{counter} e.g. MR-001-001
+
+  clinical_response_id:
+    identifier: true
+    required: true
+    range: string
+    pattern: "^CR-[0-9]{3}-[0-9]{3}$"
+    description: Primary key for ClinicalResponse. Format - CR-{patient_num}-{counter} e.g. CR-001-001
 
   assessment_date:
     range: date
     required: true
+
+  event_date:
+    range: date
+    required: true
+    description: Date clinical event was documented or detected
+
+  event_type:
+    range: ClinicalEventTypeEnum
+    required: true
+    description: Type of clinical event (Progression, Resistance, Transformation)
 
   assessment_type:
     range: AssessmentTypeEnum
@@ -883,3 +1014,13 @@ enums:
       Systemic_multi_site:
       CNS_only:
       Asymptomatic_slow:
+
+  ClinicalEventTypeEnum:
+    description: Type of clinical outcome event documented in ClinicalResponse
+    permissible_values:
+      Progression:
+        description: Disease progression event
+      Resistance:
+        description: Resistance mechanism detected
+      Transformation:
+        description: Histologic transformation (e.g. SCLC)

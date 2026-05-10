@@ -111,17 +111,18 @@ async def get_treatment_decisions(patient_id: str) -> Dict[str, Any]:
     pdl1_result = execute_query_one(pdl1_sql, (patient_id,))
     pdl1_tps = pdl1_result.get('tps_percent') if pdl1_result else None
 
-    # Get progression status
+    # Get progression status from ClinicalResponse
     progression_sql = """
     SELECT
         progression_detected,
         progression_type,
         resistance_mutation_detected,
-        resistance_mechanism
-    FROM ResponseAssessment
+        resistance_mechanism,
+        event_date
+    FROM ClinicalResponse
     WHERE patient_id = ?
       AND progression_detected = 1
-    ORDER BY assessment_date DESC
+    ORDER BY event_date DESC
     LIMIT 1
     """
     progression = execute_query_one(progression_sql, (patient_id,))
@@ -145,7 +146,7 @@ async def get_treatment_decisions(patient_id: str) -> Dict[str, Any]:
             "alert_type": "progression_detected",
             "severity": "High",
             "message": f"Radiographic progression detected - {progression.get('progression_type', 'Clinical progression')}",
-            "trigger_date": None,  # Would need assessment_date
+            "trigger_date": progression.get('event_date'),
             "requires_action": True,
             "action_recommendation": "MDT discussion for next-line therapy. Consider molecular testing for resistance mechanisms.",
             "supporting_data": {

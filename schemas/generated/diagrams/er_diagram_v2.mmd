@@ -41,6 +41,26 @@ ClinicalAssessment {
     string visit_type  
     float wbc  
 }
+ClinicalResponse {
+    string clinical_response_id  
+    date event_date  
+    ClinicalEventTypeEnum event_type  
+    boolean histologic_transformation  
+    boolean progression_detected  
+    ProgressionTypeEnum progression_type  
+    string resistance_mechanism  
+    boolean resistance_mutation_detected  
+    float time_to_progression_months  
+}
+ImagingResponse {
+    date assessment_date  
+    AssessmentTypeEnum assessment_type  
+    string imaging_response_id  
+    boolean new_lesions_present  
+    float percent_change_from_baseline  
+    RECISTResponseEnum recist_response  
+    float sum_target_lesions_mm  
+}
 ImagingStudy {
     string accession_number  
     AJCCStageEnum ajcc_stage  
@@ -67,6 +87,14 @@ ImagingStudy {
     float suv_max  
     TStageEnum t_stage  
     string thumbnail_image_path  
+}
+MolecularResponse {
+    date assessment_date  
+    AssessmentTypeEnum assessment_type  
+    boolean ctdna_mutation_cleared  
+    float ctdna_tumor_fraction_percent  
+    float ctdna_vaf_percent  
+    string molecular_response_id  
 }
 MolecularTest {
     float assay_lod_percent  
@@ -115,26 +143,6 @@ Patient {
     SexEnum sex  
     SmokingStatusEnum smoking_status  
 }
-ResponseAssessment {
-    date assessment_date  
-    string assessment_id  
-    AssessmentTypeEnum assessment_type  
-    boolean ctdna_mutation_cleared  
-    float ctdna_tumor_fraction_percent  
-    float ctdna_vaf_percent  
-    integer ecog_status  
-    boolean histologic_transformation  
-    boolean new_lesions_present  
-    float percent_change_from_baseline  
-    boolean progression_detected  
-    ProgressionTypeEnum progression_type  
-    RECISTResponseEnum recist_response  
-    string resistance_mechanism  
-    boolean resistance_mutation_detected  
-    float sum_target_lesions_mm  
-    boolean symptom_improvement  
-    float time_to_progression_months  
-}
 Treatment {
     DiscontinuationReasonEnum discontinuation_reason  
     float drug_dose_mg  
@@ -154,12 +162,16 @@ Treatment {
 
 Biopsy ||--|| Patient : "patient_id"
 ClinicalAssessment ||--|| Patient : "patient_id"
+ClinicalResponse ||--|o Treatment : "treatment_id"
+ClinicalResponse ||--|| Patient : "patient_id"
+ImagingResponse ||--|o Treatment : "treatment_id"
+ImagingResponse ||--|| ImagingStudy : "imaging_study_id"
+ImagingResponse ||--|| Patient : "patient_id"
 ImagingStudy ||--|| Patient : "patient_id"
+MolecularResponse ||--|o Treatment : "treatment_id"
+MolecularResponse ||--|| MolecularTest : "molecular_test_id"
+MolecularResponse ||--|| Patient : "patient_id"
 MolecularTest ||--|| Biopsy : "biopsy_id"
 Mutation ||--|| MolecularTest : "molecular_test_id"
-ResponseAssessment ||--|o ImagingStudy : "imaging_study_id"
-ResponseAssessment ||--|o MolecularTest : "molecular_test_id"
-ResponseAssessment ||--|o Treatment : "treatment_id"
-ResponseAssessment ||--|| Patient : "patient_id"
 Treatment ||--|| Patient : "patient_id"
 

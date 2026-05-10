@@ -14,9 +14,11 @@ function getEventIcon(eventType: string) {
       return <Syringe className="h-4 w-4 text-green-600" />;
     case 'molecular_test':
       return <Microscope className="h-4 w-4 text-purple-600" />;
-    case 'response_assessment':
+    case 'imaging_response':
       return <Activity className="h-4 w-4 text-blue-600" />;
-    case 'imaging':
+    case 'clinical_response':
+      return <Activity className="h-4 w-4 text-red-600" />;
+    case 'imaging_study':
       return <FileText className="h-4 w-4 text-gray-600" />;
     default:
       return <TrendingUp className="h-4 w-4 text-gray-600" />;

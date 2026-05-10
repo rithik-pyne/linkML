@@ -94,43 +94,73 @@ async def get_patient_timeline(patient_id: str) -> Dict[str, Any]:
             }
         })
 
-    # 3. Response assessment events (especially progression)
-    response_events_sql = """
+    # 3. Imaging response events (RECIST assessments)
+    imaging_response_events_sql = """
     SELECT
-        assessment_id,
+        imaging_response_id,
         assessment_date as date,
         assessment_type,
         recist_response,
-        sum_target_lesions_mm,
-        progression_detected
-    FROM ResponseAssessment
+        sum_target_lesions_mm
+    FROM ImagingResponse
     WHERE patient_id = ?
-      AND (progression_detected = 1 OR recist_response IN ('CR', 'PR', 'PD'))
+      AND recist_response IN ('CR', 'PR', 'PD')
     ORDER BY assessment_date
     """
-    response_events = execute_query(response_events_sql, (patient_id,))
-    for event in response_events:
-        if event['progression_detected']:
-            description = f"Progression - {event['recist_response'] or 'Clinical'}"
-        else:
-            description = f"{event['assessment_type']} - {event['recist_response']}"
-
+    imaging_response_events = execute_query(imaging_response_events_sql, (patient_id,))
+    for event in imaging_response_events:
+        description = f"{event['assessment_type']} - {event['recist_response']}"
         if event['sum_target_lesions_mm'] is not None:
             description += f" (tumor {event['sum_target_lesions_mm']:.1f}mm)"
 
         timeline_events.append({
             "date": event['date'],
-            "event_type": "response_assessment",
+            "event_type": "imaging_response",
             "description": description,
             "data": {
-                "assessment_id": event['assessment_id'],
+                "imaging_response_id": event['imaging_response_id'],
                 "recist_response": event['recist_response'],
-                "tumor_diameter_mm": event['sum_target_lesions_mm'],
-                "progression_detected": bool(event['progression_detected'])
+                "tumor_diameter_mm": event['sum_target_lesions_mm']
             }
         })
 
-    # 4. Imaging events (major staging changes)
+    # 4. Clinical response events (progression/resistance)
+    clinical_response_events_sql = """
+    SELECT
+        clinical_response_id,
+        event_date as date,
+        event_type,
+        progression_detected,
+        progression_type,
+        resistance_mechanism
+    FROM ClinicalResponse
+    WHERE patient_id = ?
+    ORDER BY event_date
+    """
+    clinical_response_events = execute_query(clinical_response_events_sql, (patient_id,))
+    for event in clinical_response_events:
+        if event['progression_detected']:
+            description = f"Progression - {event['progression_type'] or 'Clinical'}"
+        elif event['event_type'] == 'Resistance':
+            description = f"Resistance detected"
+            if event['resistance_mechanism']:
+                description += f": {event['resistance_mechanism']}"
+        else:
+            description = f"{event['event_type']} event"
+
+        timeline_events.append({
+            "date": event['date'],
+            "event_type": "clinical_response",
+            "description": description,
+            "data": {
+                "clinical_response_id": event['clinical_response_id'],
+                "event_type": event['event_type'],
+                "progression_detected": bool(event['progression_detected']),
+                "resistance_mechanism": event['resistance_mechanism']
+            }
+        })
+
+    # 5. Imaging events (major staging changes)
     imaging_events_sql = """
     SELECT
         imaging_study_id,
@@ -194,9 +224,9 @@ async def get_patient_timeline(patient_id: str) -> Dict[str, Any]:
         i.primary_tumor_diameter_mm as tumor_diameter_mm,
         i.ajcc_stage,
         i.imaging_modality,
-        r.recist_response
+        ir.recist_response
     FROM ImagingStudy i
-    LEFT JOIN ResponseAssessment r ON r.imaging_study_id = i.imaging_study_id
+    LEFT JOIN ImagingResponse ir ON ir.imaging_study_id = i.imaging_study_id
     WHERE i.patient_id = ?
     ORDER BY i.scan_date
     """

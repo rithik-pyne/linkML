@@ -78,7 +78,8 @@ def test_connection() -> Dict[str, Any]:
         # Get table counts
         tables = [
             'Patient', 'ImagingStudy', 'Biopsy', 'MolecularTest',
-            'Mutation', 'Treatment', 'ResponseAssessment', 'ClinicalAssessment'
+            'Mutation', 'Treatment', 'ImagingResponse', 'MolecularResponse',
+            'ClinicalResponse', 'ClinicalAssessment'
         ]
 
         stats = {}
